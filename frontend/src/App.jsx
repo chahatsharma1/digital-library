@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route, BrowserRouter} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import BookListPage from "./pages/BookListPage.jsx";
 import AddBookPage from "./pages/AddBookPage";
 import EditBookPage from "./pages/EditBookPage";
