@@ -7,8 +7,8 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<BookListPage />} />
-            <Route path="/add" element={<AddBookPage />} />
-            <Route path="/edit/:id" element={<EditBookPage />} />
+            {/*<Route path="/add" element={<AddBookPage />} />*/}
+            {/*<Route path="/edit/:id" element={<EditBookPage />} />*/}
         </Routes>
     );
 }

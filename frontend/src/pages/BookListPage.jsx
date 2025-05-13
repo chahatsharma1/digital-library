@@ -3,13 +3,16 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/api.js";
 import { useNavigate } from "react-router-dom";
 import { SunIcon, MoonIcon } from '@radix-ui/react-icons';
-import { Button } from "@/components/ui/button.jsx"
+import { Button } from "@/components/ui/button.jsx";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import "../index.css";
+import AddBookPage from "@/pages/AddBookPage.jsx";
+import EditBookPage from "@/pages/EditBookPage.jsx";
 
 const BookListPage = () => {
     const [books, setBooks] = useState([]);
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const navigate = useNavigate();
+    const [selectedBookId, setSelectedBookId] = useState(null);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem("theme");
@@ -27,10 +30,10 @@ const BookListPage = () => {
             const newTheme = !prev;
             if (newTheme) {
                 document.body.classList.add("dark");
-                localStorage.setItem("theme", "dark"); // Save preference
+                localStorage.setItem("theme", "dark");
             } else {
                 document.body.classList.remove("dark");
-                localStorage.setItem("theme", "light"); // Save preference
+                localStorage.setItem("theme", "light");
             }
             return newTheme;
         });
@@ -47,40 +50,48 @@ const BookListPage = () => {
         );
     };
 
-    return (
-        <div className="min-h-screen p-6 bg-background">
-            <Button
-                onClick={handleToggleTheme}
-                variant="ghost"
-                className="p-2 rounded-full
-             text-black dark:text-white
-             hover:bg-gray-200 dark:hover:bg-gray-800
-             focus:ring-2 focus:ring-primary"
-            >
-                {isDarkMode ? (
-                    <SunIcon className="w-5 h-5" />
-                ) : (
-                    <MoonIcon className="w-5 h-5" />
-                )}
-            </Button>
+    const handleEdit = (bookId) => {
+        setSelectedBookId(bookId);
+    };
 
-            <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-                <h1 className="text-4xl font-bold mb-4 sm:mb-0 text-primary">📚 Book List</h1>
-                <Button onClick={() => navigate("/add")}
-                        className="bg-primary hover:bg-primary/90 text-white font-semibold px-5 py-2 rounded-lg transition">
-                    ➕ Add Book
+    const reloadBooks = () => {
+        axios.get(API_BASE_URL).then((res) => setBooks(res.data));
+    };
+
+    return (
+        <div className="min-h-screen p-6 bg-background text-foreground transition-colors">
+            <div className="flex justify-end mb-4">
+                <Button onClick={handleToggleTheme} variant="ghost" className="p-2 rounded-full text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 ">
+                    {isDarkMode ? (
+                        <SunIcon className="w-5 h-5" />) : (<MoonIcon className="w-5 h-5" />)}
                 </Button>
             </div>
 
-            <div className="overflow-x-auto">
-                <table className="min-w-full rounded-lg shadow-lg bg-card text-card-foreground">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 max-w-5xl mx-auto">
+                <h1 className="text-4xl font-bold text-primary mb-4 sm:mb-0">📚 Book List</h1>
+
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button className="bg-primary hover:bg-primary/90 text-white font-semibold px-5 py-2 rounded-lg transition">
+                            ➕ Add Book
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg bg-card text-card-foreground shadow-xl rounded-2xl p-8">
+                        <DialogTitle className="text-3xl font-bold mb-6">📘 Add a New Book</DialogTitle>
+                        <AddBookPage onClose={() => { reloadBooks(); }} />
+                    </DialogContent>
+                </Dialog>
+            </div>
+
+            <div className="w-full max-w-5xl mx-auto overflow-hidden rounded-2xl shadow-xl bg-card text-card-foreground border border-border">
+                <table className="w-full border-separate border-spacing-0 text-sm sm:text-base">
                     <thead className="bg-muted text-muted-foreground">
                     <tr>
-                        <th className="p-4 text-left">Title</th>
+                        <th className="p-4 text-left rounded-tl-2xl">Title</th>
                         <th className="p-4 text-left">Author</th>
                         <th className="p-4 text-left">Genre</th>
                         <th className="p-4 text-left">Status</th>
-                        <th className="p-4 text-left">Actions</th>
+                        <th className="p-4 text-left rounded-tr-2xl">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -91,28 +102,38 @@ const BookListPage = () => {
                             </td>
                         </tr>
                     ) : (
-                        books.map((b) => (
-                            <tr key={b.id} className="border-t hover:bg-muted">
-                                <td className="p-4">{b.title}</td>
-                                <td className="p-4">{b.author}</td>
-                                <td className="p-4">{b.genre}</td>
-                                <td className="p-4">{b.availabilityStatus}</td>
-                                <td className="p-4">
-                                    <button
-                                        onClick={() => navigate(`/edit/${b.id}`)}
-                                        className="text-primary hover:underline mr-4"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(b.id)}
-                                        className="text-destructive hover:underline"
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))
+                        books.map((b, index) => {
+                            const isLast = index === books.length - 1;
+                            return (
+                                <tr key={b.id} className="group transition hover:bg-muted">
+                                    <td className={`p-4 ${isLast ? "rounded-bl-2xl" : ""}`}>{b.title}</td>
+                                    <td className="p-4">{b.author}</td>
+                                    <td className="p-4">{b.genre}</td>
+                                    <td className="p-4">{b.availabilityStatus.replace("_", " ")}</td>
+                                    <td className={`p-4 ${isLast ? "rounded-br-2xl" : ""}`}>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <button
+                                                    onClick={() => handleEdit(b.id)}
+                                                    className="text-primary hover:underline mr-4">
+                                                    Edit
+                                                </button>
+                                            </DialogTrigger>
+                                            <DialogContent className="max-w-lg bg-card text-card-foreground shadow-xl rounded-2xl p-8">
+                                                <DialogTitle>Edit Book</DialogTitle>
+                                                <EditBookPage bookId={b.id} onClose={() => { reloadBooks(); }} />
+                                            </DialogContent>
+                                        </Dialog>
+
+                                        <button
+                                            onClick={() => handleDelete(b.id)}
+                                            className="text-destructive hover:underline">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })
                     )}
                     </tbody>
                 </table>

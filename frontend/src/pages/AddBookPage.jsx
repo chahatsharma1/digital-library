@@ -1,19 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../config/api.js";
-import BookForm from "../pages/BookForm";
+import { API_BASE_URL } from "../config/api";
 
-const AddBookPage = () => {
-    const navigate = useNavigate();
-    const handleAdd = (data) => {
-        axios.post(API_BASE_URL, data).then(() => navigate("/"));
+const AddBookPage = ({ onClose }) => {
+    const [formData, setFormData] = useState({
+        title: "",
+        author: "",
+        genre: "",
+        availabilityStatus: "AVAILABLE",
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post(API_BASE_URL, formData).then(() => {
+            onClose?.();
+        });
+    };
+
     return (
-        <div className="p-8 bg-gray-900 min-h-screen text-white">
-            <h2 className="text-2xl mb-4">Add Book</h2>
-            <BookForm onSubmit={handleAdd} onCancel={() => navigate("/")} />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-6 p-4 sm:p-8">
+            <div>
+                <Label htmlFor="title">Title</Label>
+                <Input
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                    className="mt-2 w-full p-2"
+                />
+            </div>
+            <div>
+                <Label htmlFor="author">Author</Label>
+                <Input
+                    id="author"
+                    name="author"
+                    value={formData.author}
+                    onChange={handleChange}
+                    required
+                    className="mt-2 w-full p-2"
+                />
+            </div>
+            <div>
+                <Label htmlFor="genre">Genre</Label>
+                <Input
+                    id="genre"
+                    name="genre"
+                    value={formData.genre}
+                    onChange={handleChange}
+                    required
+                    className="mt-2 w-full p-2"
+                />
+            </div>
+            <div>
+                <Label htmlFor="availabilityStatus">Status</Label>
+                <select
+                    id="availabilityStatus"
+                    name="availabilityStatus"
+                    value={formData.availabilityStatus}
+                    onChange={handleChange}
+                    className="w-full mt-2 p-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                >
+                    <option value="AVAILABLE">Available</option>
+                    <option value="CHECKED_OUT">Checked Out</option>
+                </select>
+            </div>
+            <div className="flex justify-center gap-4 pt-6">
+                <Button type="submit">
+                    Save
+                </Button>
+            </div>
+        </form>
     );
 };
 
