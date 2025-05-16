@@ -12,6 +12,7 @@ const AddBookPage = ({ onClose }) => {
         genre: "",
         availabilityStatus: "AVAILABLE",
     });
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,9 +21,17 @@ const AddBookPage = ({ onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(API_BASE_URL, formData).then(() => {
-            onClose?.();
-        });
+        setLoading(true);
+        axios.post(`${API_BASE_URL}/books`, formData)
+            .then(() => {
+                onClose?.();
+            })
+            .catch((error) => {
+                console.error("Failed to add book:", error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
     return (
@@ -74,8 +83,8 @@ const AddBookPage = ({ onClose }) => {
                 </select>
             </div>
             <div className="flex justify-center gap-4 pt-6">
-                <Button type="submit">
-                    Save
+                <Button type="submit" disabled={loading}>
+                    {loading ? "Saving..." : "Save"}
                 </Button>
             </div>
         </form>
