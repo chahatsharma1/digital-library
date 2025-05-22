@@ -10,6 +10,7 @@ import java.util.List;
 @RequestMapping("/books")
 @CrossOrigin("*")
 public class BookController {
+
     private final BookService bookService;
 
     public BookController(BookService bookService) {
