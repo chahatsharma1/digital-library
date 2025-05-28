@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "@/state/auth/Action.js";
+import {register} from "@/state/auth/Action.js";
 
 const Signup = () => {
     const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(registerUser(formData));
+        dispatch(register(formData));
     };
 
     return (

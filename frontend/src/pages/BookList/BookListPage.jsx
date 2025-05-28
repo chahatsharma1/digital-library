@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_BASE_URL } from "../config/api.js";
+import { API_BASE_URL } from "../../config/api.js";
 import { SunIcon, MoonIcon } from '@radix-ui/react-icons';
 import { Button } from "@/components/ui/button.jsx";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import "../index.css";
-import AddBookPage from "@/pages/AddBookPage.jsx";
-import EditBookPage from "@/pages/EditBookPage.jsx";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog.jsx";
+import "../../index.css";
+import AddBookPage from "@/pages/AddPage/AddBookPage.jsx";
+import EditBookPage from "@/pages/EditPage/EditBookPage.jsx";
 
 const BookListPage = () => {
     const [books, setBooks] = useState([]);

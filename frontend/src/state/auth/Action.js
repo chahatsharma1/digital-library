@@ -1,42 +1,36 @@
 import {REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,} from "./ActionType";
 import {API_BASE_URL} from "@/config/api.js";
+import axios from "axios";
 
-export const registerUser = async (userData, dispatch) => {
+export const register = (userData) => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
+
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userData),
-        });
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Failed to register");
-        }
-
-        dispatch({ type: REGISTER_SUCCESS, payload: data });
+        const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+        const user = response.data;
+        dispatch({ type: REGISTER_SUCCESS, payload: user.jwt });
+        localStorage.setItem("jwt", user.jwt);
+        return Promise.resolve()
     } catch (error) {
-        dispatch({ type: REGISTER_FAILURE, error: error.message });
+        dispatch({ type: REGISTER_FAILURE, payload: error.message });
+        return Promise.reject();
     }
 };
 
-export const loginUser = async (loginData, dispatch) => {
+export const login = (userData, navigate) => async (dispatch) => {
     dispatch({ type: LOGIN_REQUEST });
+
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(loginData),
-        });
-        const data = await response.json();
+        const response = await axios.post(`${API_BASE_URL}/auth/login`, userData);
+        const user = response.data;
 
-        if (!response.ok) {
-            throw new Error(data.message || "Failed to login");
-        }
-
-        dispatch({ type: LOGIN_SUCCESS, payload: data });
+        dispatch({ type: LOGIN_SUCCESS, payload: user.jwt });
+        localStorage.setItem("jwt", user.jwt);
+        // await dispatch(getUser(user.jwt));
+        navigate("/booklist");
+        return { error: false };
     } catch (error) {
-        dispatch({ type: LOGIN_FAILURE, error: error.message });
+        dispatch({ type: LOGIN_FAILURE, payload: error.message });
+        return { error: true, message: error.response?.data?.message || "User login failed" };
     }
 };

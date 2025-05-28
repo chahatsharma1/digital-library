@@ -1,10 +1,10 @@
 import {Routes, Route} from "react-router-dom";
-import BookListPage from "./pages/BookListPage.jsx";
-import AddBookPage from "./pages/AddBookPage";
-import EditBookPage from "./pages/EditBookPage";
+import BookListPage from "@/pages/BookList/BookListPage.jsx";
+import AddBookPage from "@/pages/AddPage/AddBookPage.jsx";
+import EditBookPage from "@/pages/EditPage/EditBookPage.jsx";
 import Home from "@/pages/Home.jsx";
-import Login from "@/pages/auth/Login.jsx";
-import Signup from "@/pages/auth/Signup.jsx";
+import Login from "@/pages/Auth/Login.jsx";
+import Signup from "@/pages/Auth/Signup.jsx";
 
 function App() {
     return (
