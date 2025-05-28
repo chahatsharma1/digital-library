@@ -1,10 +1,11 @@
 package com.chahat.library_management.entity;
 
-import com.chahat.library_management.domain.Role;
+import com.chahat.library_management.domain.ROLE;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
+@Table(name = "users")
 @Data
 public class User {
     @Id
@@ -15,5 +16,5 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private ROLE role;
 }

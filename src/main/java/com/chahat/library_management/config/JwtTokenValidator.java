@@ -17,7 +17,6 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JwtTokenValidator extends OncePerRequestFilter {
 
@@ -40,13 +39,11 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
                 String email = String.valueOf(claims.get("email"));
 
-                List<String> roles = claims.get("roles", List.class);
+                String role = claims.get("role", String.class);
 
-                List<GrantedAuthority> authorities = roles.stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+                GrantedAuthority authority = new SimpleGrantedAuthority(role);
 
-                Authentication auth = new UsernamePasswordAuthenticationToken(email, null, authorities);
+                Authentication auth = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
