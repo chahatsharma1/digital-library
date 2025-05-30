@@ -26,4 +26,8 @@ public class Book {
     @NotNull(message = "Availability status is required")
     @Enumerated(EnumType.STRING)
     private AvailabilityStatus availabilityStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "library_id")
+    private Library library;
 }

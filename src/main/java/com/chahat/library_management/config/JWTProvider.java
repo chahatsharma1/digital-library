@@ -7,7 +7,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import javax.crypto.SecretKey;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
 
 public class JWTProvider {
 
@@ -19,6 +20,8 @@ public class JWTProvider {
                 .expiration(new Date(System.currentTimeMillis() + 86400000))
                 .claim("email", user.getEmail())
                 .claim("role", user.getRole())
+                .claim("userId", user.getId())
+                .claim("universityId", user.getUniversity() != null ? user.getUniversity().getId() : null)
                 .signWith(key)
                 .compact();
     }
@@ -27,13 +30,26 @@ public class JWTProvider {
         String email = auth.getName();
         String role = auth.getAuthorities().stream()
                 .findFirst()
-                .map(GrantedAuthority::getAuthority).orElse("STUDENT");
+                .map(GrantedAuthority::getAuthority)
+                .orElse("USER");
+
+        Object principal = auth.getPrincipal();
+
+        Long universityId = null;
+        Long userId = null;
+
+        if (principal instanceof User user) {
+            universityId = user.getUniversity() != null ? user.getUniversity().getId() : null;
+            userId = user.getId();
+        }
 
         return Jwts.builder()
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 86400000))
                 .claim("email", email)
                 .claim("role", role)
+                .claim("userId", userId)
+                .claim("universityId", universityId)
                 .signWith(key)
                 .compact();
     }
@@ -43,7 +59,6 @@ public class JWTProvider {
             token = token.substring(7);
         }
         Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
-
         return String.valueOf(claims.get("email"));
     }
 
@@ -53,5 +68,21 @@ public class JWTProvider {
         }
         Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
         return claims.get("role", String.class);
+    }
+
+    public static Long getUniversityIdFromToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+        return claims.get("universityId", Long.class);
+    }
+
+    public static Long getUserIdFromToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+        return claims.get("userId", Long.class);
     }
 }

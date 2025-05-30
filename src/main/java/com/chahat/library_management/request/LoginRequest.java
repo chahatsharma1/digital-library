@@ -1,4 +1,4 @@
-package com.chahat.library_management.response;
+package com.chahat.library_management.request;
 
 import lombok.Data;
 

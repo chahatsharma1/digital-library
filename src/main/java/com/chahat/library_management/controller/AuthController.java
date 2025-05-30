@@ -1,11 +1,15 @@
 package com.chahat.library_management.controller;
 
 import com.chahat.library_management.config.JWTProvider;
+import com.chahat.library_management.domain.ROLE;
+import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
+import com.chahat.library_management.repository.LibraryRepository;
+import com.chahat.library_management.repository.UniversityRepository;
 import com.chahat.library_management.repository.UserRepository;
 import com.chahat.library_management.request.UserRequest;
 import com.chahat.library_management.response.AuthResponse;
-import com.chahat.library_management.response.LoginRequest;
+import com.chahat.library_management.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +31,12 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
+    private UniversityRepository universityRepository;
+
+    @Autowired
+    private LibraryRepository libraryRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -35,10 +45,22 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody UserRequest request){
 
-        User exist = userRepository.findUserByEmail(request.getEmail());
-        if (exist != null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthResponse(null, "User already Exist, try again with a different email"));
+        if (request.getRole() != ROLE.ROLE_STUDENT){
+            return ResponseEntity.badRequest().body(new AuthResponse(null, "Only STUDENT role can self-register"));
         }
+
+        if (request.getUniversityId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new AuthResponse(null, "University ID is required for USER registration"));
+        }
+
+        if (userRepository.findUserByEmail(request.getEmail()) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new AuthResponse(null, "User already exists with this email"));
+        }
+
+        University university = universityRepository.findById(request.getUniversityId())
+                .orElseThrow(() -> new RuntimeException("University not found"));
 
         User user = new User();
         user.setEmail(request.getEmail());
