@@ -28,6 +28,7 @@ public class Book {
     private AvailabilityStatus availabilityStatus;
 
     @ManyToOne
-    @JoinColumn(name = "library_id")
-    private Library library;
+    @JoinColumn(name = "university_id")
+    private University university;
+
 }

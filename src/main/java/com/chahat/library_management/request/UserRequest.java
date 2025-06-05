@@ -9,4 +9,6 @@ public class UserRequest {
     private String password;
     private ROLE role;
     private Long universityId;
+    private String universityName;
+    private String city;
 }

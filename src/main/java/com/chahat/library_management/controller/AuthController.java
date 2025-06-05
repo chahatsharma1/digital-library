@@ -4,7 +4,6 @@ import com.chahat.library_management.config.JWTProvider;
 import com.chahat.library_management.domain.ROLE;
 import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
-import com.chahat.library_management.repository.LibraryRepository;
 import com.chahat.library_management.repository.UniversityRepository;
 import com.chahat.library_management.repository.UserRepository;
 import com.chahat.library_management.request.UserRequest;
@@ -18,6 +17,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,29 +34,38 @@ public class AuthController {
     private UniversityRepository universityRepository;
 
     @Autowired
-    private LibraryRepository libraryRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Transactional
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody UserRequest request){
-
-        if (request.getRole() != ROLE.ROLE_STUDENT){
-            return ResponseEntity.badRequest().body(new AuthResponse(null, "Only STUDENT role can self-register"));
-        }
-
-        if (request.getUniversityId() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new AuthResponse(null, "University ID is required for USER registration"));
-        }
 
         if (userRepository.findUserByEmail(request.getEmail()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new AuthResponse(null, "User already exists with this email"));
+        }
+
+        if (request.getRole() == ROLE.ROLE_STUDENT) {
+            if (request.getUniversityId() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new AuthResponse(null, "University ID is required for STUDENT registration"));
+            }
+        }
+
+        if (request.getRole() == ROLE.ROLE_ADMIN){
+            if (request.getUniversityName() == null){
+                return ResponseEntity.badRequest().body(new AuthResponse(null, "University Name is Required"));
+            }
+
+            University university = new University();
+            university.setName(request.getUniversityName());
+            university.setCity(request.getCity());
+            universityRepository.save(university);
+
+            request.setUniversityId(university.getId());
         }
 
         University university = universityRepository.findById(request.getUniversityId())
@@ -66,6 +75,7 @@ public class AuthController {
         user.setEmail(request.getEmail());
         user.setRole(request.getRole());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUniversity(university);
 
         userRepository.save(user);
 

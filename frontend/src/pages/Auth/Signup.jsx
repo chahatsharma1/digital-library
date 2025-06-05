@@ -1,56 +1,43 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {register} from "@/state/auth/Action.js";
+import { useState } from "react";
+import StudentRegisterForm from "../Register/StudentRegisterForm";
+import UniversityRegisterForm from "../Register/UniversityRegisterForm";
 
 const Signup = () => {
-    const dispatch = useDispatch();
-    const { error } = useSelector((state) => state.auth);
-    const [formData, setFormData] = useState({ email: "", password: "", role: "STUDENT" });
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(register(formData));
-    };
+    const [activeTab, setActiveTab] = useState("student");
 
     return (
-        <div className="flex justify-center items-center h-screen bg-[#0F172A] text-white">
-            <form className="bg-[#1E293B] p-8 rounded-2xl shadow-lg w-full max-w-sm" onSubmit={handleSubmit}>
-                <h2 className="text-2xl mb-4 font-semibold">Register</h2>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    className="w-full p-2 mb-4 rounded bg-[#0F172A] text-white"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    className="w-full p-2 mb-4 rounded bg-[#0F172A] text-white"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-                <select
-                    name="role"
-                    className="w-full p-2 mb-4 rounded bg-[#0F172A] text-white"
-                    value={formData.role}
-                    onChange={handleChange}
+        <div className="bg-background text-foreground px-4 py-10 flex flex-col items-center">
+            <h2 className="text-4xl font-bold mb-6">Register</h2>
+
+            <div className="flex space-x-4 mb-8 border-b border-border">
+                <button
+                    className={`pb-2 text-lg ${
+                        activeTab === "student"
+                            ? "text-primary border-b-2 border-primary"
+                            : "text-muted-foreground"
+                    }`}
+                    onClick={() => setActiveTab("student")}>
+                    Student Registration
+                </button>
+                <button
+                    className={`pb-2 text-lg ${
+                        activeTab === "university"
+                            ? "text-primary border-b-2 border-primary"
+                            : "text-muted-foreground"
+                    }`}
+                    onClick={() => setActiveTab("university")}
                 >
-                    <option value="STUDENT">Student</option>
-                    <option value="LIBRARIAN">Librarian</option>
-                    <option value="ADMIN">Admin</option>
-                </select>
-                {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-                <button className="w-full bg-[#38BDF8] hover:bg-[#0EA5E9] text-white p-2 rounded">Register</button>
-            </form>
+                    University Registration
+                </button>
+            </div>
+
+            <div className="w-full max-w-xl bg-card p-8 rounded-2xl shadow-lg">
+                {activeTab === "student" ? (
+                    <StudentRegisterForm />
+                ) : (
+                    <UniversityRegisterForm />
+                )}
+            </div>
         </div>
     );
 };

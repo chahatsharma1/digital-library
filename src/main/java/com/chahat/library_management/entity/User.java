@@ -19,10 +19,6 @@ public class User {
     private ROLE role;
 
     @ManyToOne
-    @JoinColumn(name = "library_id")
-    private Library library;
-
-    @ManyToOne
     @JoinColumn(name = "university_id")
     private University university;
 }
