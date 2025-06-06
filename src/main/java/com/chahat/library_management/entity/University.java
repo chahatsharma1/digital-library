@@ -16,6 +16,9 @@ public class University {
     private String name;
     private String city;
 
+    @OneToOne
+    private User user;
+
     @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books = new ArrayList<>();
 }

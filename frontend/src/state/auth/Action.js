@@ -27,7 +27,7 @@ export const login = (userData, navigate) => async (dispatch) => {
 
         dispatch({ type: LOGIN_SUCCESS, payload: user.jwt });
         localStorage.setItem("jwt", user.jwt);
-        navigate("/booklist");
+        navigate("/admin");
         return { error: false };
     } catch (error) {
         dispatch({ type: LOGIN_FAILURE, payload: error.message });

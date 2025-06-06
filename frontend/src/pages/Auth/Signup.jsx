@@ -1,6 +1,6 @@
 import { useState } from "react";
-import StudentRegisterForm from "../Register/StudentRegisterForm";
-import UniversityRegisterForm from "../Register/UniversityRegisterForm";
+import StudentRegisterForm from "@/pages/Form/StudentRegisterForm";
+import UniversityRegisterForm from "@/pages/Form/UniversityRegisterForm";
 
 const Signup = () => {
     const [activeTab, setActiveTab] = useState("student");
