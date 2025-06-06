@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import axios from "axios";
-import { API_BASE_URL } from "../../config/api.js";
+import { API_BASE_URL } from "@/config/api.js";
 
-const EditBookPage = ({ bookId, onClose }) => {
+const AddBookPage = ({ onClose }) => {
     const [formData, setFormData] = useState({
         title: "",
         author: "",
@@ -13,26 +13,6 @@ const EditBookPage = ({ bookId, onClose }) => {
         availabilityStatus: "AVAILABLE",
     });
     const [loading, setLoading] = useState(false);
-    const [fetching, setFetching] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        if (bookId) {
-            setFetching(true);
-            setError(null);
-            axios.get(`${API_BASE_URL}/books/${bookId}`)
-                .then((res) => {
-                    setFormData(res.data);
-                })
-                .catch((err) => {
-                    setError("Failed to load book data.");
-                    console.error(err);
-                })
-                .finally(() => {
-                    setFetching(false);
-                });
-        }
-    }, [bookId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,30 +22,21 @@ const EditBookPage = ({ bookId, onClose }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        setError(null);
-
-        axios.put(`${API_BASE_URL}/books/${bookId}`, formData)
+        axios.post(`${API_BASE_URL}/books`, formData)
             .then(() => {
                 onClose?.();
             })
-            .catch((err) => {
-                setError("Failed to update book.");
-                console.error(err);
+            .catch((error) => {
+                console.error("Failed to add book:", error);
             })
             .finally(() => {
                 setLoading(false);
             });
     };
 
-
-    if (fetching) return <p>Loading book data...</p>;
-
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 px-6 py-4">
-            {error && (
-                <p className="text-destructive mb-4 text-center">{error}</p>
-            )}
-            <div className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-6 p-4 sm:p-8">
+            <div>
                 <Label htmlFor="title">Title</Label>
                 <Input
                     id="title"
@@ -73,10 +44,10 @@ const EditBookPage = ({ bookId, onClose }) => {
                     value={formData.title}
                     onChange={handleChange}
                     required
-                    disabled={loading}
+                    className="mt-2 w-full p-2"
                 />
             </div>
-            <div className="space-y-2">
+            <div>
                 <Label htmlFor="author">Author</Label>
                 <Input
                     id="author"
@@ -84,10 +55,10 @@ const EditBookPage = ({ bookId, onClose }) => {
                     value={formData.author}
                     onChange={handleChange}
                     required
-                    disabled={loading}
+                    className="mt-2 w-full p-2"
                 />
             </div>
-            <div className="space-y-2">
+            <div>
                 <Label htmlFor="genre">Genre</Label>
                 <Input
                     id="genre"
@@ -95,30 +66,29 @@ const EditBookPage = ({ bookId, onClose }) => {
                     value={formData.genre}
                     onChange={handleChange}
                     required
-                    disabled={loading}
+                    className="mt-2 w-full p-2"
                 />
             </div>
-            <div className="space-y-2">
+            <div>
                 <Label htmlFor="availabilityStatus">Status</Label>
                 <select
                     id="availabilityStatus"
                     name="availabilityStatus"
                     value={formData.availabilityStatus}
                     onChange={handleChange}
-                    disabled={loading}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus:ring-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="w-full mt-2 p-2 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 >
                     <option value="AVAILABLE">Available</option>
                     <option value="CHECKED_OUT">Checked Out</option>
                 </select>
             </div>
-            <div className="flex justify-center gap-2 pt-4">
+            <div className="flex justify-center gap-4 pt-6">
                 <Button type="submit" disabled={loading}>
-                    {loading ? "Saving..." : "Save Changes"}
+                    {loading ? "Saving..." : "Save"}
                 </Button>
             </div>
         </form>
     );
 };
 
-export default EditBookPage;
+export default AddBookPage;
