@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getLibrarianByUniversity(University university) {
+        return userRepository.findByRoleAndUniversity(ROLE.ROLE_LIBRARIAN, university);
+    }
+
+    @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }

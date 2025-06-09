@@ -11,7 +11,7 @@ import lombok.*;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank(message = "Title cannot be empty")
@@ -30,5 +30,4 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "university_id")
     private University university;
-
 }

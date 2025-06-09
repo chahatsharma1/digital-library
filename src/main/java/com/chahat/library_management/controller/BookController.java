@@ -8,7 +8,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/books")
-@CrossOrigin("*")
 public class BookController {
 
     private final BookService bookService;

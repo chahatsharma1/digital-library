@@ -11,6 +11,7 @@ public interface UserService {
     User findUserByJWT(String jwt) throws Exception;
     List<User> getAllUsers();
     List<User> getUserByRole(ROLE role);
+    User getLibrarianByUniversity(University university);
     void deleteUser(Long userId);
     void addLibrarian(UserRequest librarian, University university);
 }

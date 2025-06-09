@@ -23,7 +23,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ROLE role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "university_id")
     private University university;
 }
