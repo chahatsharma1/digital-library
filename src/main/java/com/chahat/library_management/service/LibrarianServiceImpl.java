@@ -1,5 +1,6 @@
 package com.chahat.library_management.service;
 
+import com.chahat.library_management.domain.AvailabilityStatus;
 import com.chahat.library_management.entity.Book;
 import com.chahat.library_management.entity.Issue;
 import com.chahat.library_management.entity.University;
@@ -18,9 +19,6 @@ import java.util.List;
 public class LibrarianServiceImpl implements LibrarianService {
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
     private BookRepository bookRepository;
 
     @Autowired
@@ -32,8 +30,10 @@ public class LibrarianServiceImpl implements LibrarianService {
     @Override
     public Book addBook(Book book, University university) {
         book.setUniversity(university);
-        return bookService.addBook(book);
+        book.setAvailabilityStatus(AvailabilityStatus.AVAILABLE);
+        return bookRepository.save(book);
     }
+
 
     @Override
     public List<Book> getAllBooks(University university) {

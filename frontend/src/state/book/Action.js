@@ -1,14 +1,38 @@
 import axios from "axios";
-import {FETCH_BOOKS_REQUEST, FETCH_BOOKS_SUCCESS, FETCH_BOOKS_FAILURE, FETCH_ISSUES_SUCCESS, FETCH_ISSUES_BY_STUDENT_SUCCESS, ISSUE_BOOK_SUCCESS,    RETURN_BOOK_SUCCESS} from "./ActionType";
+import {ADD_BOOK_REQUEST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, FETCH_BOOKS_REQUEST, FETCH_BOOKS_SUCCESS, FETCH_BOOKS_FAILURE, FETCH_ISSUES_SUCCESS, FETCH_ISSUES_BY_STUDENT_SUCCESS, ISSUE_BOOK_SUCCESS,    RETURN_BOOK_SUCCESS} from "./ActionType";
 import {API_BASE_URL} from "@/config/api.js";
+
+export const addBook = (bookData, jwt ) => async (dispatch) => {
+    dispatch({ type: ADD_BOOK_REQUEST });
+
+    try {
+        const response = await axios.post(`${API_BASE_URL}/librarian/book`, bookData, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,},
+            }
+        );
+        dispatch({
+            type: ADD_BOOK_SUCCESS,
+            payload: response.data,
+        });
+    } catch (error) {
+        dispatch({
+            type: ADD_BOOK_FAILURE,
+            payload: error.response?.data?.message || error.message,
+        });
+    }
+};
+
 
 export const fetchBooks = (jwt) => async (dispatch) => {
     dispatch({ type: FETCH_BOOKS_REQUEST });
     try {
         const response = await axios.get(`${API_BASE_URL}/librarian/books`, {
-            headers: { Authorization: jwt },
+            headers: { Authorization: `Bearer ${jwt}`,
+            },
         });
         dispatch({ type: FETCH_BOOKS_SUCCESS, payload: response.data });
+        console.log(response.data);
     } catch (error) {
         dispatch({
             type: FETCH_BOOKS_FAILURE,

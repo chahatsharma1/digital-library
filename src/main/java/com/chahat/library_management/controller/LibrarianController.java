@@ -22,6 +22,14 @@ public class LibrarianController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/book")
+    public ResponseEntity<Book> addBook(@RequestBody Book book, @RequestHeader("Authorization") String jwt) throws Exception {
+        User librarian = userService.findUserByJWT(jwt);
+        University university = librarian.getUniversity();
+        Book createdBook = librarianService.addBook(book, university);
+        return ResponseEntity.ok(createdBook);
+    }
+
     @GetMapping("/books")
     public ResponseEntity<List<Book>> getAllBooks(@RequestHeader("Authorization") String jwt) throws Exception {
         User librarian = userService.findUserByJWT(jwt);

@@ -8,6 +8,8 @@ import Dashboard from "@/pages/Admin/Dashboard.jsx";
 import User from "@/pages/Admin/User.jsx";
 import AdminLibrarian from "@/pages/Admin/AdminLibrarian.jsx";
 import LibrarianDashboard from "@/pages/Librarian/LibrarianDashboard.jsx";
+import AddBookPage from "@/pages/Librarian/AddBookPage.jsx";
+import BookList from "@/pages/Librarian/BookList.jsx";
 
 function App() {
     return (
@@ -19,6 +21,8 @@ function App() {
                 <Route path="/admin/users" element={<User/>} />
                 <Route path="/admin/librarian" element={<AdminLibrarian/>} />
                 <Route path="/librarian" element={<LibrarianDashboard/>} />
+                <Route path="/librarian/add-book" element={<AddBookPage/>} />
+                <Route path="/librarian/books" element={<BookList/>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/universities" element={<Universities />} />
             </Route>
