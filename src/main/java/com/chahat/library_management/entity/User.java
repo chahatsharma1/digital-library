@@ -26,4 +26,7 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "university_id")
     private University university;
+
+    @ManyToOne
+    private Library library;
 }

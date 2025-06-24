@@ -1,6 +1,7 @@
 import { useState } from "react";
 import StudentRegisterForm from "@/pages/Form/StudentRegisterForm";
 import UniversityRegisterForm from "@/pages/Form/UniversityRegisterForm";
+import PublicLibraryRegisterForm from "@/pages/Form/LibraryRegisterForm";
 
 const Signup = () => {
     const [activeTab, setActiveTab] = useState("student");
@@ -16,9 +17,11 @@ const Signup = () => {
                             ? "text-primary border-b-2 border-primary"
                             : "text-muted-foreground"
                     }`}
-                    onClick={() => setActiveTab("student")}>
+                    onClick={() => setActiveTab("student")}
+                >
                     Student Registration
                 </button>
+
                 <button
                     className={`pb-2 text-lg ${
                         activeTab === "university"
@@ -29,14 +32,23 @@ const Signup = () => {
                 >
                     University Registration
                 </button>
+
+                <button
+                    className={`pb-2 text-lg ${
+                        activeTab === "library"
+                            ? "text-primary border-b-2 border-primary"
+                            : "text-muted-foreground"
+                    }`}
+                    onClick={() => setActiveTab("library")}
+                >
+                    Public Library Registration
+                </button>
             </div>
 
             <div className="w-full max-w-xl bg-card p-8 rounded-2xl shadow-lg">
-                {activeTab === "student" ? (
-                    <StudentRegisterForm />
-                ) : (
-                    <UniversityRegisterForm />
-                )}
+                {activeTab === "student" && <StudentRegisterForm />}
+                {activeTab === "university" && <UniversityRegisterForm />}
+                {activeTab === "library" && <PublicLibraryRegisterForm />} {/* ✅ Add this */}
             </div>
         </div>
     );

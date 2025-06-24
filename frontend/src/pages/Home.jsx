@@ -10,8 +10,7 @@ const Home = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-6xl font-extrabold mb-4"
-                >
+                    className="text-5xl md:text-6xl font-extrabold mb-4">
                     Welcome to LibraryVerse
                 </motion.h2>
 
@@ -19,8 +18,7 @@ const Home = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3, duration: 0.8 }}
-                    className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12"
-                >
+                    className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12">
                     A modern, secure, and efficient platform to manage university libraries and student borrowing — all in one place.
                 </motion.p>
 
@@ -28,13 +26,11 @@ const Home = () => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.6, duration: 0.6 }}
-                    className="flex flex-col md:flex-row flex-wrap justify-center gap-4"
-                >
+                    className="flex flex-col md:flex-row flex-wrap justify-center gap-4">
                     <Link to="/register">
                         <Button
                             size="lg"
-                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110"
-                        >
+                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110">
                             Signup
                         </Button>
                     </Link>
@@ -42,8 +38,7 @@ const Home = () => {
                     <Link to="/login">
                         <Button
                             size="lg"
-                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110"
-                        >
+                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110">
                             Login
                         </Button>
                     </Link>
@@ -51,9 +46,8 @@ const Home = () => {
                     <Link to="/universities">
                         <Button
                             size="lg"
-                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110"
-                        >
-                            View Public Universities
+                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110">
+                            View Public Library
                         </Button>
                     </Link>
                 </motion.div>

@@ -8,7 +8,8 @@ import java.util.List;
 
 @Entity
 @Data
-public class University {
+public class Library {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -16,9 +17,9 @@ public class University {
     private String name;
     private String city;
 
-    @OneToMany
-    private List<User> user;
+    @OneToOne
+    private User user;
 
-    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Book> books = new ArrayList<>();
 }

@@ -12,4 +12,5 @@ public class UserRequest {
     private Long universityId;
     private String universityName;
     private String city;
+    private String libraryName;
 }

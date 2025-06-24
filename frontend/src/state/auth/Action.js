@@ -8,7 +8,6 @@ export const register = (userData) => async (dispatch) => {
     try {
         const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
         const user = response.data;
-        console.log(response.data);
         dispatch({ type: REGISTER_SUCCESS, payload: user.jwt });
         localStorage.setItem("jwt", user.jwt);
         return Promise.resolve()

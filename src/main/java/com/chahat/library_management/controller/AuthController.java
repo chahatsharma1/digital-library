@@ -1,9 +1,10 @@
 package com.chahat.library_management.controller;
 
 import com.chahat.library_management.config.JWTProvider;
-import com.chahat.library_management.domain.ROLE;
+import com.chahat.library_management.entity.Library;
 import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
+import com.chahat.library_management.repository.LibraryRepository;
 import com.chahat.library_management.repository.UniversityRepository;
 import com.chahat.library_management.repository.UserRepository;
 import com.chahat.library_management.request.UserRequest;
@@ -34,6 +35,9 @@ public class AuthController {
     private UniversityRepository universityRepository;
 
     @Autowired
+    private LibraryRepository libraryRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -48,34 +52,55 @@ public class AuthController {
                     .body(new AuthResponse(null, "User already exists with this email"));
         }
 
-        if (request.getRole() == ROLE.ROLE_STUDENT) {
-            if (request.getUniversityId() == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new AuthResponse(null, "University ID is required for STUDENT registration"));
-            }
-        }
-
-        if (request.getRole() == ROLE.ROLE_ADMIN){
-            if (request.getUniversityName() == null){
-                return ResponseEntity.badRequest().body(new AuthResponse(null, "University Name is Required"));
-            }
-
-            University university = new University();
-            university.setName(request.getUniversityName());
-            university.setCity(request.getCity());
-            universityRepository.save(university);
-
-            request.setUniversityId(university.getId());
-        }
-
-        University university = universityRepository.findById(request.getUniversityId())
-                .orElseThrow(() -> new RuntimeException("University not found"));
-
         User user = new User();
+        user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setRole(request.getRole());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setUniversity(university);
+
+        switch (request.getRole()){
+            case ROLE_STUDENT -> {
+                if (request.getUniversityId() == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(new AuthResponse(null, "University ID is required for STUDENT registration"));
+                }
+
+                University university = universityRepository.findById(request.getUniversityId())
+                        .orElseThrow(() -> new RuntimeException("University not found"));
+
+                user.setUniversity(university);
+            }
+
+            case ROLE_ADMIN -> {
+                if (request.getUniversityName() == null){
+                    return ResponseEntity.badRequest().body(new AuthResponse(null, "University Name is Required"));
+                }
+
+                University university = new University();
+                university.setName(request.getUniversityName());
+                university.setCity(request.getCity());
+                universityRepository.save(university);
+
+                user.setUniversity(university);
+            }
+
+            case ROLE_LIBRARY_ADMIN -> {
+                if (request.getLibraryName() == null) {
+                    return ResponseEntity.badRequest().body(new AuthResponse(null, "Library Name is required for LIBRARY_ADMIN registration"));
+                }
+
+                Library library = new Library();
+                library.setName(request.getLibraryName());
+                library.setCity(request.getCity());
+                libraryRepository.save(library);
+
+                user.setLibrary(library);
+            }
+
+            default -> {
+                return ResponseEntity.badRequest().body(new AuthResponse(null, "Invalid Role"));
+            }
+        }
 
         userRepository.save(user);
 

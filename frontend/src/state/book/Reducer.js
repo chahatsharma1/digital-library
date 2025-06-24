@@ -10,7 +10,6 @@ const initialState = {
 }
 
 export const bookReducer = (state = initialState, action) => {
-    console.log("Reducer: Action received:", action.type, action.payload);
     switch (action.type) {
         case ADD_BOOK_REQUEST:
         case FETCH_BOOKS_REQUEST:
@@ -20,7 +19,6 @@ export const bookReducer = (state = initialState, action) => {
             return { ...state, loading: false, addedBook: action.payload };
 
         case FETCH_BOOKS_SUCCESS:
-            console.log("Reducer: FETCH_BOOKS_SUCCESS, payload:", action.payload);
             return { ...state, books: action.payload, loading: false };
 
         case FETCH_ISSUES_SUCCESS:

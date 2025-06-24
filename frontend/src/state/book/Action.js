@@ -32,7 +32,6 @@ export const fetchBooks = (jwt) => async (dispatch) => {
             },
         });
         dispatch({ type: FETCH_BOOKS_SUCCESS, payload: response.data });
-        console.log(response.data);
     } catch (error) {
         dispatch({
             type: FETCH_BOOKS_FAILURE,

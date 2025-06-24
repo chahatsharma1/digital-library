@@ -8,6 +8,7 @@ const StudentRegisterForm = () => {
     const { error } = useSelector((store) => store.auth);
     const { universities } = useSelector((store) => store.university);
     const [formData, setFormData] = useState({
+        name : "",
         email: "",
         password: "",
         role: "ROLE_STUDENT",
@@ -29,6 +30,16 @@ const StudentRegisterForm = () => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+                type="name"
+                name="name"
+                placeholder="Name"
+                className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
+                value={formData.name}
+                onChange={handleChange}
+                required
+            />
+
             <input
                 type="email"
                 name="email"
@@ -59,12 +70,18 @@ const StudentRegisterForm = () => {
                 <option value="" disabled className="text-muted-foreground">
                     Select University
                 </option>
-                {universities?.map((uni) => (
-                    <option key={uni.id} value={uni.id} className="text-foreground">
-                        {uni.name}
-                    </option>
-                ))}
+
+                {Array.isArray(universities) && universities.length > 0 ? (
+                    universities.map((uni) => (
+                        <option key={uni.id} value={uni.id} className="text-foreground">
+                            {uni.name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>Loading universities...</option>
+                )}
             </select>
+
 
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 

@@ -1,6 +1,7 @@
 package com.chahat.library_management.entity;
 
 import com.chahat.library_management.domain.AvailabilityStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,5 +30,10 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "university_id")
+    @JsonIgnore
     private University university;
+
+    @ManyToOne
+    @JoinColumn(name = "library_id")
+    private Library library;
 }

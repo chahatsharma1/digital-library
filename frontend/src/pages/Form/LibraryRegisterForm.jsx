@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "@/state/auth/Action.js";
 
-const UniversityRegisterForm = () => {
+const LibraryRegisterForm = () => {
     const dispatch = useDispatch();
     const { error } = useSelector((state) => state.auth);
 
@@ -10,8 +10,8 @@ const UniversityRegisterForm = () => {
         name : "",
         email: "",
         password: "",
-        role: "ROLE_ADMIN",
-        universityName: "",
+        role: "ROLE_LIBRARY_ADMIN",
+        libraryName: "",
         city: "",
     });
 
@@ -26,7 +26,6 @@ const UniversityRegisterForm = () => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-
             <input
                 type="name"
                 name="name"
@@ -59,10 +58,10 @@ const UniversityRegisterForm = () => {
 
             <input
                 type="text"
-                name="universityName"
-                placeholder="University Name"
+                name="libraryName"
+                placeholder="Public Library Name"
                 className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
-                value={formData.universityName}
+                value={formData.libraryName}
                 onChange={handleChange}
                 required
             />
@@ -87,4 +86,4 @@ const UniversityRegisterForm = () => {
     );
 };
 
-export default UniversityRegisterForm;
+export default LibraryRegisterForm;
