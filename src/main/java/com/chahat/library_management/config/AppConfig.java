@@ -34,7 +34,7 @@ public class AppConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/**", "/libraries/**").permitAll()
+                        .requestMatchers("/auth/**", "/libraries/**", "/actuator/health").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "LIBRARY_ADMIN")
                         .requestMatchers("/student").hasRole("STUDENT")
                         .requestMatchers("/librarian").hasRole("LIBRARIAN")
