@@ -1,4 +1,12 @@
-import {REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,} from "./ActionType";
+import {
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAILURE,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
+    LOGOUT,
+} from "./ActionType";
 import {API_BASE_URL} from "@/config/api.js";
 import axios from "axios";
 
@@ -32,4 +40,9 @@ export const login = (userData, navigate) => async (dispatch) => {
         dispatch({ type: LOGIN_FAILURE, payload: error.message });
         return { error: true, message: error.response?.data?.message || "User login failed" };
     }
+};
+
+export const logout = () => (dispatch) => {
+    localStorage.removeItem("jwt");
+    dispatch({ type: LOGOUT });
 };

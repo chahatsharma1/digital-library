@@ -43,7 +43,7 @@ const Home = () => {
                         </Button>
                     </Link>
 
-                    <Link to="/universities">
+                    <Link to="/library">
                         <Button
                             size="lg"
                             className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110">

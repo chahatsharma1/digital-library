@@ -1,5 +1,5 @@
 import axios from "axios";
-import {ADD_BOOK_REQUEST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, FETCH_BOOKS_REQUEST, FETCH_BOOKS_SUCCESS, FETCH_BOOKS_FAILURE, FETCH_ISSUES_SUCCESS, FETCH_ISSUES_BY_STUDENT_SUCCESS, ISSUE_BOOK_SUCCESS,    RETURN_BOOK_SUCCESS} from "./ActionType";
+import {ADD_BOOK_REQUEST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, FETCH_BOOKS_REQUEST, FETCH_BOOKS_SUCCESS, FETCH_BOOKS_FAILURE, FETCH_ISSUES_SUCCESS, FETCH_ISSUES_BY_STUDENT_SUCCESS, ISSUE_BOOK_SUCCESS, RETURN_BOOK_SUCCESS, FETCH_BOOKS_BY_LIBRARY_REQUEST, FETCH_BOOKS_BY_LIBRARY_SUCCESS, FETCH_BOOKS_BY_LIBRARY_FAILURE} from "./ActionType";
 import {API_BASE_URL} from "@/config/api.js";
 
 export const addBook = (bookData, jwt ) => async (dispatch) => {
@@ -37,6 +37,17 @@ export const fetchBooks = (jwt) => async (dispatch) => {
             type: FETCH_BOOKS_FAILURE,
             payload: error.response?.data?.message || "Failed to fetch books",
         });
+    }
+};
+
+export const fetchBooksByLibrary = (libraryId) => async (dispatch) => {
+    dispatch({ type: FETCH_BOOKS_BY_LIBRARY_REQUEST });
+
+    try {
+        const res = await axios.get(`${API_BASE_URL}/libraries/${libraryId}/books`);
+        dispatch({ type: FETCH_BOOKS_BY_LIBRARY_SUCCESS, payload: res.data });
+    } catch (error) {
+        dispatch({ type: FETCH_BOOKS_BY_LIBRARY_FAILURE, payload: error.message });
     }
 };
 

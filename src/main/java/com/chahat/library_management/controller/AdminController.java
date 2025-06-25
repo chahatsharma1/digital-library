@@ -1,5 +1,6 @@
 package com.chahat.library_management.controller;
 
+import com.chahat.library_management.entity.Library;
 import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
 import com.chahat.library_management.request.UserRequest;
@@ -44,9 +45,10 @@ public class AdminController {
     @PostMapping("/add")
     public ResponseEntity<?> addLibrarian(@RequestBody UserRequest userRequest,@RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJWT(jwt);
+        Library library = user.getLibrary();
         University university = user.getUniversity();
 
-        userService.addLibrarian(userRequest, university);
+        userService.addLibrarian(userRequest, university, library);
         return ResponseEntity.ok("Librarian Added");
     }
 }

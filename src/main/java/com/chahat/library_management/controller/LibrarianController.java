@@ -1,9 +1,6 @@
 package com.chahat.library_management.controller;
 
-import com.chahat.library_management.entity.Book;
-import com.chahat.library_management.entity.Issue;
-import com.chahat.library_management.entity.University;
-import com.chahat.library_management.entity.User;
+import com.chahat.library_management.entity.*;
 import com.chahat.library_management.service.LibrarianService;
 import com.chahat.library_management.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +23,21 @@ public class LibrarianController {
     public ResponseEntity<Book> addBook(@RequestBody Book book, @RequestHeader("Authorization") String jwt) throws Exception {
         User librarian = userService.findUserByJWT(jwt);
         University university = librarian.getUniversity();
-        Book createdBook = librarianService.addBook(book, university);
+        Library library = librarian.getLibrary();
+        Book createdBook = librarianService.addBook(book, university, library);
         return ResponseEntity.ok(createdBook);
     }
 
     @GetMapping("/books")
     public ResponseEntity<List<Book>> getAllBooks(@RequestHeader("Authorization") String jwt) throws Exception {
         User librarian = userService.findUserByJWT(jwt);
-        University university = librarian.getUniversity();
-        List<Book> books = librarianService.getAllBooks(university);
+        List<Book> books;
+        if (librarian.getUniversity() != null){
+            books = librarianService.getAllBooks(librarian.getUniversity());
+        } else {
+            books = librarianService.getAllBooksByLibrary(librarian.getLibrary());
+        }
+
         return ResponseEntity.ok(books);
     }
 

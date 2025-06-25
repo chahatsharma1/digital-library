@@ -2,6 +2,7 @@ package com.chahat.library_management.service;
 
 import com.chahat.library_management.config.JWTProvider;
 import com.chahat.library_management.domain.ROLE;
+import com.chahat.library_management.entity.Library;
 import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
 import com.chahat.library_management.repository.UserRepository;
@@ -53,10 +54,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addLibrarian(UserRequest librarian, University university) {
+    public void addLibrarian(UserRequest librarian, University university, Library library) {
         User user = new User();
         user.setName(librarian.getName());
         user.setUniversity(university);
+        user.setLibrary(library);
         user.setEmail(librarian.getEmail());
         user.setPassword(passwordEncoder.encode(librarian.getPassword()));
         user.setRole(ROLE.ROLE_LIBRARIAN);

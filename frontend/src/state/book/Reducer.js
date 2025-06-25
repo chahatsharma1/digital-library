@@ -1,4 +1,16 @@
-import {FETCH_BOOKS_REQUEST, FETCH_BOOKS_SUCCESS, FETCH_BOOKS_FAILURE, FETCH_ISSUES_SUCCESS, FETCH_ISSUES_BY_STUDENT_SUCCESS, ISSUE_BOOK_SUCCESS, RETURN_BOOK_SUCCESS, ADD_BOOK_REQUEST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE,} from "./ActionType";
+import {
+    FETCH_BOOKS_REQUEST,
+    FETCH_BOOKS_SUCCESS,
+    FETCH_BOOKS_FAILURE,
+    FETCH_ISSUES_SUCCESS,
+    FETCH_ISSUES_BY_STUDENT_SUCCESS,
+    ISSUE_BOOK_SUCCESS,
+    RETURN_BOOK_SUCCESS,
+    ADD_BOOK_REQUEST,
+    ADD_BOOK_SUCCESS,
+    ADD_BOOK_FAILURE,
+    FETCH_BOOKS_BY_LIBRARY_SUCCESS, FETCH_BOOKS_BY_LIBRARY_FAILURE, FETCH_BOOKS_BY_LIBRARY_REQUEST,
+} from "./ActionType";
 
 const initialState = {
     books: [],
@@ -11,6 +23,7 @@ const initialState = {
 
 export const bookReducer = (state = initialState, action) => {
     switch (action.type) {
+        case FETCH_BOOKS_BY_LIBRARY_REQUEST:
         case ADD_BOOK_REQUEST:
         case FETCH_BOOKS_REQUEST:
             return { ...state, loading: true, error: null };
@@ -38,11 +51,17 @@ export const bookReducer = (state = initialState, action) => {
                 ),
             };
 
+
+        case FETCH_BOOKS_BY_LIBRARY_SUCCESS:
+            return { ...state, loading: false, books: action.payload };
+
         case FETCH_BOOKS_FAILURE:
         case ADD_BOOK_FAILURE:
+        case FETCH_BOOKS_BY_LIBRARY_FAILURE:
             return { ...state, loading: false, error: action.payload };
 
         default:
             return state;
     }
 };
+export default bookReducer;

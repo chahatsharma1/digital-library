@@ -35,5 +35,6 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "library_id")
+    @JsonIgnore
     private Library library;
 }

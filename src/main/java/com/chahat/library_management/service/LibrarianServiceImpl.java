@@ -1,10 +1,7 @@
 package com.chahat.library_management.service;
 
 import com.chahat.library_management.domain.AvailabilityStatus;
-import com.chahat.library_management.entity.Book;
-import com.chahat.library_management.entity.Issue;
-import com.chahat.library_management.entity.University;
-import com.chahat.library_management.entity.User;
+import com.chahat.library_management.entity.*;
 import com.chahat.library_management.repository.BookRepository;
 import com.chahat.library_management.repository.IssueRepository;
 import com.chahat.library_management.repository.UserRepository;
@@ -28,8 +25,9 @@ public class LibrarianServiceImpl implements LibrarianService {
     private UserRepository userRepository;
 
     @Override
-    public Book addBook(Book book, University university) {
+    public Book addBook(Book book, University university, Library library) {
         book.setUniversity(university);
+        book.setLibrary(library);
         book.setAvailabilityStatus(AvailabilityStatus.AVAILABLE);
         return bookRepository.save(book);
     }
@@ -38,6 +36,11 @@ public class LibrarianServiceImpl implements LibrarianService {
     @Override
     public List<Book> getAllBooks(University university) {
         return bookRepository.findByUniversity(university);
+    }
+
+    @Override
+    public List<Book> getAllBooksByLibrary(Library library){
+        return bookRepository.findByLibraryId(library.getId());
     }
 
     @Override
