@@ -23,8 +23,9 @@ out/
 *.classpath
 .gradle/
 .mvn/
-**/application-*.yml
-**/application-*.properties
+
+application-dev.properties
+
 
 frontend/node_modules/
 frontend/dist/
@@ -41,3 +42,5 @@ coverage/
 test-output/
 
 *.swp
+
+.env

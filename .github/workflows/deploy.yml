@@ -5,9 +5,10 @@ on:
     branches:
       - main
     paths:
-        - 'src/**'
-        - 'pom.xml'
-        - 'Dockerfile'
+      - 'src/**'
+      - 'pom.xml'
+      - 'Dockerfile'
+      - '.github/**'
 
 jobs:
   deploy:
@@ -37,16 +38,14 @@ jobs:
 
       - name: Set GCP project and region
         run: |
-          gcloud config set project library-management-1001 
+          gcloud config set project library-management-1001
           gcloud config set run/region asia-south1
 
       - name: Build Docker Image
-        run: |
-          docker build -t gcr.io/library-management-1001/library-backend .
+        run: docker build -t gcr.io/library-management-1001/library-backend .
 
       - name: Push Docker Image to Container Registry
-        run: |
-          docker push gcr.io/library-management-1001/library-backend
+        run: docker push gcr.io/library-management-1001/library-backend
 
       - name: Deploy to Cloud Run
         run: |
@@ -54,4 +53,5 @@ jobs:
             --image gcr.io/library-management-1001/library-backend \
             --platform managed \
             --region asia-south1 \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --set-env-vars SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }},DB_URL=${{ secrets.DB_URL }},DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},FRONTEND_URL=${{ secrets.FRONTEND_URL }},SERVER_PORT=${{ secrets.SERVER_PORT }}
