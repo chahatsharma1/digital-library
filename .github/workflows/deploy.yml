@@ -42,7 +42,7 @@ jobs:
           gcloud config set run/region asia-south1
 
       - name: Build Docker Image
-        run: docker build -t gcr.io/library-management-1001/library-backend .
+        run: docker build --platform=linux/amd64 -t gcr.io/library-management-1001/library-backend .
 
       - name: Push Docker Image to Container Registry
         run: docker push gcr.io/library-management-1001/library-backend
