@@ -29,9 +29,11 @@ const Layout = () => {
     return (
         <div className="min-h-screen bg-background text-foreground flex flex-col">
             <header className="p-6 flex justify-between items-center border-b">
-                <Link to="/" className="text-3xl font-bold tracking-tight hover:opacity-90 transition">
+                <Link to="/" className="flex items-center gap-2 text-3xl font-bold tracking-tight hover:opacity-90 transition">
+                    <img src="/logo1.png" alt="Library Logo" className="h-8 w-8" />
                     LibraryVerse
                 </Link>
+
                 <div className="flex items-center gap-4">
                     <Button
                         variant="ghost"

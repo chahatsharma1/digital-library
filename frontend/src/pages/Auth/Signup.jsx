@@ -12,36 +12,36 @@ const Signup = () => {
 
             <div className="flex space-x-4 mb-8 border-b border-border">
                 <button
-                    className={`pb-2 text-lg ${
+                    className={`pb-2 text-lg font-semibold ${
                         activeTab === "student"
                             ? "text-primary border-b-2 border-primary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => setActiveTab("student")}
                 >
-                    Student Registration
+                    Student
                 </button>
 
                 <button
-                    className={`pb-2 text-lg ${
+                    className={`pb-2 text-lg font-semibold ${
                         activeTab === "university"
                             ? "text-primary border-b-2 border-primary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => setActiveTab("university")}
                 >
-                    University Registration
+                    University
                 </button>
 
                 <button
-                    className={`pb-2 text-lg ${
+                    className={`pb-2 text-lg font-semibold ${
                         activeTab === "library"
                             ? "text-primary border-b-2 border-primary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => setActiveTab("library")}
                 >
-                    Public Library Registration
+                    Public Library
                 </button>
             </div>
 

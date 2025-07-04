@@ -1,4 +1,3 @@
-# === Global ===
 .DS_Store
 *.log
 *.env
@@ -32,6 +31,9 @@ frontend/dist/
 frontend/.next/
 frontend/.cache/
 frontend/.env
+frontend/.env.production
+frontend/.firebase
+frontend/.firebaserc
 
 logs/
 npm-debug.log*
