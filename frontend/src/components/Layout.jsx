@@ -70,7 +70,6 @@ const Layout = () => {
                         </nav>
                     )}
 
-                    {/* On Login page, show Signup button */}
                     {isLogin && (
                         <nav>
                             <Link to="/register">

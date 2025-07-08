@@ -13,6 +13,7 @@ public interface UserService {
     List<User> getAllUsers();
     List<User> getUserByRole(ROLE role);
     User getLibrarianByUniversity(University university);
+    User getLibrarianByLibrary(Library library);
     void deleteUser(Long userId);
     void addLibrarian(UserRequest librarian, University university, Library library);
 }

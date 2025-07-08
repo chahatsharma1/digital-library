@@ -5,7 +5,6 @@ import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
 import com.chahat.library_management.request.UserRequest;
 import com.chahat.library_management.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +27,14 @@ public class AdminController {
     public ResponseEntity<User> getLibrarian(@RequestHeader("Authorization") String jwt) throws Exception {
         User adminUser = userService.findUserByJWT(jwt);
         University university = adminUser.getUniversity();
+        Library library = adminUser.getLibrary();
+        User librarian;
 
-        User librarian = userService.getLibrarianByUniversity(university);
+        if (library != null){
+            librarian = userService.getLibrarianByLibrary(library);
+        } else {
+            librarian = userService.getLibrarianByUniversity(university);
+        }
         if (librarian == null) {
             return ResponseEntity.noContent().build();
         }

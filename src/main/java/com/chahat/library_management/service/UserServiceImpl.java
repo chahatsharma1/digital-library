@@ -49,6 +49,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getLibrarianByLibrary(Library library) {
+        return userRepository.findByRoleAndLibrary(ROLE.ROLE_LIBRARIAN, library);
+    }
+
+    @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
