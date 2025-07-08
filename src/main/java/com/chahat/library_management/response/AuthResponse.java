@@ -1,5 +1,6 @@
 package com.chahat.library_management.response;
 
+import com.chahat.library_management.domain.ROLE;
 import lombok.Data;
 
 @Data

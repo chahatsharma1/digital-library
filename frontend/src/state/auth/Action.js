@@ -34,11 +34,20 @@ export const login = (userData, navigate) => async (dispatch) => {
 
         dispatch({ type: LOGIN_SUCCESS, payload: user.jwt });
         localStorage.setItem("jwt", user.jwt);
-        navigate("/librarian");
+
+        const role = userData.role;
+
+        if (role === "ROLE_ADMIN") navigate("/admin");
+        else if (role === "ROLE_LIBRARIAN") navigate("/librarian");
+        else navigate("/student");
+
         return { error: false };
     } catch (error) {
         dispatch({ type: LOGIN_FAILURE, payload: error.message });
-        return { error: true, message: error.response?.data?.message || "User login failed" };
+        return {
+            error: true,
+            message: error.response?.data?.message || "User login failed",
+        };
     }
 };
 
