@@ -27,9 +27,9 @@ const Layout = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background text-foreground flex flex-col font-mono">
+        <div className="min-h-screen bg-background text-foreground flex flex-col">
             <header className="p-6 flex justify-between items-center border-b">
-                <Link to="/" className="flex items-center gap-2 text-3xl font-bold tracking-tight hover:opacity-90 transition">
+                <Link to="/" className="flex items-center gap-2 text-2xl font-bold font-outfit tracking-tight hover:opacity-90 transition">
                     <img src="/logo1.png" alt="Library Logo" className="h-8 w-8" />
                     LibraryVerse
                 </Link>
@@ -47,12 +47,12 @@ const Layout = () => {
                     {isHome && (
                         <nav className="space-x-4">
                             <Link to="/login">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110">
+                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
                                     Login
                                 </Button>
                             </Link>
                             <Link to="/register">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110">
+                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
                                     Signup
                                 </Button>
                             </Link>
@@ -62,7 +62,7 @@ const Layout = () => {
                     {isRegister && (
                         <nav>
                             <Link to="/login">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110">
+                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
                                     Login
                                 </Button>
                             </Link>
@@ -72,7 +72,7 @@ const Layout = () => {
                     {isLogin && (
                         <nav>
                             <Link to="/register">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110">
+                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
                                     Signup
                                 </Button>
                             </Link>
@@ -85,7 +85,7 @@ const Layout = () => {
                 <Outlet />
             </main>
 
-            <footer className="text-center text-sm text-muted-foreground py-4 border-t">
+            <footer className="text-center text-sm text-muted-foreground py-4 border-t font-outfit">
                 © 2025 LibraryVerse. Built for the future of academic access.
             </footer>
         </div>

@@ -39,7 +39,7 @@ const Login = () => {
     };
 
     return (
-        <div className="bg-background text-foreground flex flex-col items-center justify-center px-4 py-10 font-mono">
+        <div className="bg-background text-foreground flex flex-col items-center justify-center px-4 py-10 font-outfit">
             <h2 className="text-4xl font-bold mb-6">Login</h2>
 
             <div className="flex space-x-6 mb-8 border-b border-border">
@@ -77,9 +77,10 @@ const Login = () => {
 
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-md bg-card p-8 rounded-2xl shadow-md space-y-6"
+                className="w-full max-w-md bg-card/50 backdrop-blur-md p-8 rounded-2xl border border-border shadow-md space-y-6"
             >
-                <input
+
+            <input
                     type="email"
                     name="email"
                     placeholder="Email"

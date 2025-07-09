@@ -32,7 +32,7 @@ const LibraryBooks = () => {
     });
 
     return (
-        <div className="p-4 min-h-screen bg-background text-foreground font-mono flex flex-col items-center">
+        <div className="p-4 min-h-screen bg-background text-foreground font-outfit flex flex-col items-center">
             <div className="mb-4 w-full max-w-sm animate-fade-up duration-700 delay-75">
                 <input
                     type="text"
@@ -77,22 +77,20 @@ const LibraryBooks = () => {
             )}
 
             {!loading && filteredBooks?.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-up duration-500 delay-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up duration-500 delay-200 w-full px-4">
                     {filteredBooks.map((book) => (
                         <div
                             key={book.id}
-                            className="w-full max-w-xs mx-auto p-3 rounded-lg bg-card text-card-foreground border border-border shadow-sm hover:shadow-md hover:border-accent transition duration-200 group">
-                            <p className="text-sm mt-1">
-                                <span className="font-medium"></span> {book.title}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
+                            className="w-full h-full p-6 rounded-2xl bg-card text-card-foreground border border-border shadow-md hover:shadow-xl hover:border-primary transition duration-300 group">
+                            <p className="text-lg font-bold mb-3">{book.title}</p>
+                            <p className="text-sm text-muted-foreground mb-1">
                                 <span className="font-medium">Author:</span> {book.author}
                             </p>
-                            <p className="text-xs mt-2 inline-block px-2 py-0.5 rounded bg-accent text-accent-foreground">
-                                Genre : {book.genre}
+                            <p className="text-sm text-muted-foreground mb-1">
+                                 <span className="font-medium"> Status:</span> {book.availabilityStatus}
                             </p>
-                            <p className="text-xs mt-2 text-muted-foreground italic">
-                                Status: <span className="font-medium">{book.availabilityStatus}</span>
+                            <p className="text-sm inline-block px-2 py-1 rounded bg-accent text-accent-foreground mb-2">
+                                Genre: {book.genre}
                             </p>
                         </div>
                     ))}

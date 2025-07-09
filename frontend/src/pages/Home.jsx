@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const Home = () => {
     return (
-        <div className="min-h-screen bg-background text-foreground flex flex-col font-mono">
+        <div className="min-h-screen bg-background text-foreground flex flex-col font-outfit">
             <main className="flex-1 flex flex-col justify-center items-center text-center px-4">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
@@ -30,7 +30,7 @@ const Home = () => {
                     <Link to="/register">
                         <Button
                             size="lg"
-                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110">
+                            className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:brightness-110">
                             Signup
                         </Button>
                     </Link>
@@ -38,7 +38,7 @@ const Home = () => {
                     <Link to="/login">
                         <Button
                             size="lg"
-                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110">
+                            className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:brightness-110">
                             Login
                         </Button>
                     </Link>
@@ -46,7 +46,7 @@ const Home = () => {
                     <Link to="/library">
                         <Button
                             size="lg"
-                            className="bg-primary text-primary-foreground px-8 py-5 rounded-2xl text-lg shadow-md hover:brightness-110">
+                            className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:brightness-110">
                             View Public Library
                         </Button>
                     </Link>
