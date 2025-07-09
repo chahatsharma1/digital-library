@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const Home = () => {
     return (
-        <div className="min-h-screen bg-background text-foreground flex flex-col">
+        <div className="min-h-screen bg-background text-foreground flex flex-col font-mono">
             <main className="flex-1 flex flex-col justify-center items-center text-center px-4">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}

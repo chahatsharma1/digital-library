@@ -2,46 +2,64 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button.jsx";
-import {fetchLibraries} from "@/state/library/Action.js";
-import {useNavigate} from "react-router-dom";
+import { fetchLibraries } from "@/state/library/Action.js";
+import { useNavigate } from "react-router-dom";
 
 const Library = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { libraries, loading, error } = useSelector((state) => state.library);
 
-    useEffect(() => {
-        dispatch(fetchLibraries())
+    const [searchQuery, setSearchQuery] = useState("");
 
+    useEffect(() => {
+        dispatch(fetchLibraries());
     }, [dispatch]);
 
     const handleSelect = (library) => {
         navigate(`/library/${library.id}/books`, { state: { library } });
     };
 
+    const filteredLibraries = libraries?.filter((lib) =>
+        lib.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        lib.city.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
-        <div className="min-h-screen px-4 py-10 bg-background text-foreground">
-            <div className="max-w-5xl mx-auto text-center">
+        <div className="min-h-screen px-4 py-10 bg-background text-foreground font-mono">
+            <div className="max-w-4xl mx-auto text-center">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="text-4xl font-bold mb-6"
-                >
+                    className="text-3xl font-bold mb-6">
                     Public Library
                 </motion.h2>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="mb-6 flex justify-center">
+                    <input
+                        type="text"
+                        placeholder="Search by name or city..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full md:w-2/3 px-5 py-3 rounded-lg border border-border bg-popover text-foreground placeholder-muted-foreground shadow-sm focus:ring-2 focus:ring-primary transition"
+                    />
+                </motion.div>
 
                 {loading && <p className="text-muted-foreground">Loading Libraries...</p>}
                 {error && <p className="text-red-500">{error}</p>}
 
-                {!loading && !error && Array.isArray(libraries) && libraries.length === 0 && (
-                    <p className="text-muted-foreground">No Library found.</p>
+                {!loading && !error && filteredLibraries?.length === 0 && (
+                    <p className="text-muted-foreground">No libraries found.</p>
                 )}
 
-                {!loading && Array.isArray(libraries) && libraries.length > 0 && (
+                {!loading && filteredLibraries?.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                        {libraries.map((lib) => (
+                        {filteredLibraries.map((lib) => (
                             <motion.div
                                 key={lib.id}
                                 initial={{ opacity: 0, scale: 0.95 }}

@@ -27,7 +27,7 @@ const Layout = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background text-foreground flex flex-col">
+        <div className="min-h-screen bg-background text-foreground flex flex-col font-mono">
             <header className="p-6 flex justify-between items-center border-b">
                 <Link to="/" className="flex items-center gap-2 text-3xl font-bold tracking-tight hover:opacity-90 transition">
                     <img src="/logo1.png" alt="Library Logo" className="h-8 w-8" />
@@ -40,8 +40,7 @@ const Layout = () => {
                         size="icon"
                         onClick={toggleTheme}
                         className="text-muted-foreground hover:text-foreground"
-                        aria-label="Toggle dark mode"
-                    >
+                        aria-label="Toggle dark mode">
                         {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                     </Button>
 

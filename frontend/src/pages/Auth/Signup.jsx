@@ -7,7 +7,7 @@ const Signup = () => {
     const [activeTab, setActiveTab] = useState("student");
 
     return (
-        <div className="bg-background text-foreground px-4 py-10 flex flex-col items-center">
+        <div className="bg-background text-foreground px-4 py-10 flex flex-col items-center font-mono">
             <h2 className="text-4xl font-bold mb-6">Register</h2>
 
             <div className="flex space-x-4 mb-8 border-b border-border">

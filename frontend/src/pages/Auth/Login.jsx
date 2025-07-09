@@ -39,7 +39,7 @@ const Login = () => {
     };
 
     return (
-        <div className="bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
+        <div className="bg-background text-foreground flex flex-col items-center justify-center px-4 py-10 font-mono">
             <h2 className="text-4xl font-bold mb-6">Login</h2>
 
             <div className="flex space-x-6 mb-8 border-b border-border">
