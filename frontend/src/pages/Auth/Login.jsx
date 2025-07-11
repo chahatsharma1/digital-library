@@ -46,7 +46,7 @@ const Login = () => {
                 <button
                     className={`pb-2 text-lg font-semibold ${
                         activeTab === "student"
-                            ? "text-primary border-b-2 border-primary"
+                            ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => handleTabChange("student")}
@@ -56,7 +56,7 @@ const Login = () => {
                 <button
                     className={`pb-2 text-lg font-semibold ${
                         activeTab === "admin"
-                            ? "text-primary border-b-2 border-primary"
+                            ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => handleTabChange("admin")}
@@ -66,7 +66,7 @@ const Login = () => {
                 <button
                     className={`pb-2 text-lg font-semibold ${
                         activeTab === "librarian"
-                            ? "text-primary border-b-2 border-primary"
+                            ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => handleTabChange("librarian")}

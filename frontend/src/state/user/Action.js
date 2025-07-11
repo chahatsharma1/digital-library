@@ -3,16 +3,17 @@ import {FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE, DELETE_US
 
 import { API_BASE_URL } from "@/config/api.js";
 
-export const fetchUsers = (jwt) => async (dispatch) => {
+export const fetchStudents = (jwt) => async (dispatch) => {
     dispatch({ type: FETCH_USERS_REQUEST });
 
     try {
-        const response = await axios.get(`${API_BASE_URL}/admin/users`, {
+        const response = await axios.get(`${API_BASE_URL}/admin/students`, {
             headers: {
                 Authorization: `Bearer ${jwt}`
             }
         });
         dispatch({ type: FETCH_USERS_SUCCESS, payload: response.data });
+        console.log(response.data);
     } catch (error) {
         dispatch({
             type: FETCH_USERS_FAILURE,

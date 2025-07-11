@@ -14,7 +14,7 @@ const Signup = () => {
                 <button
                     className={`pb-2 text-lg font-semibold ${
                         activeTab === "student"
-                            ? "text-primary border-b-2 border-primary"
+                            ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => setActiveTab("student")}
@@ -25,7 +25,7 @@ const Signup = () => {
                 <button
                     className={`pb-2 text-lg font-semibold ${
                         activeTab === "university"
-                            ? "text-primary border-b-2 border-primary"
+                            ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => setActiveTab("university")}
@@ -36,7 +36,7 @@ const Signup = () => {
                 <button
                     className={`pb-2 text-lg font-semibold ${
                         activeTab === "library"
-                            ? "text-primary border-b-2 border-primary"
+                            ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
                     onClick={() => setActiveTab("library")}

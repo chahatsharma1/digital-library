@@ -1,5 +1,6 @@
 package com.chahat.library_management.controller;
 
+import com.chahat.library_management.domain.ROLE;
 import com.chahat.library_management.entity.Library;
 import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
@@ -18,9 +19,11 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    @GetMapping("/students")
+    public List<User> getAllStudents(@RequestHeader("Authorization") String jwt) throws Exception {
+        User adminUser = userService.findUserByJWT(jwt);
+        University university = adminUser.getUniversity();
+        return userService.getUserByRoleAndUniversity(ROLE.ROLE_STUDENT, university);
     }
 
     @GetMapping("/librarian")

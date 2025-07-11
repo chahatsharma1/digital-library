@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
@@ -15,17 +14,7 @@ public class UniversityServiceImpl implements UniversityService {
     private UniversityRepository universityRepository;
 
     @Override
-    public Optional<University> getUniversityById(Long id) {
-        return universityRepository.findById(id);
-    }
-
-    @Override
     public List<University> getAllUniversities() {
         return universityRepository.findAll();
-    }
-
-    @Override
-    public void deleteUniversity(Long id) {
-        universityRepository.deleteById(id);
     }
 }

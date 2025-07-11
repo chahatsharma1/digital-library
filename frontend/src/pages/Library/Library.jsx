@@ -25,13 +25,14 @@ const Library = () => {
     );
 
     return (
-        <div className="min-h-screen px-4 py-10 bg-background text-foreground font-outfit">
+        <div className="min-h-screen px-4 py-10 font-outfit bg-gradient-to-b from-muted/10 to-background text-foreground">
             <div className="max-w-7xl mx-auto text-center">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="text-4xl font-bold mb-8">
+                    className="text-4xl font-bold mb-8"
+                >
                     Public Library
                 </motion.h2>
 
@@ -39,20 +40,28 @@ const Library = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="mb-8 flex justify-center">
+                    className="mb-8 flex justify-center"
+                >
                     <input
                         type="text"
                         placeholder="Search by name or city..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full md:w-1/2 px-5 py-3 rounded-lg border border-border bg-popover text-foreground placeholder-muted-foreground shadow-sm focus:ring-2 focus:ring-primary transition"
+                        className="w-full md:w-1/2 px-5 py-3 rounded-lg
+                                   bg-card/60 backdrop-blur-md
+                                   border border-border
+                                   text-foreground placeholder-muted-foreground
+                                   shadow-sm focus:ring-2 focus:ring-primary
+                                   transition"
                     />
                 </motion.div>
 
-                {loading && <p className="text-muted-foreground">📚 Loading Libraries...</p>}
-                {error && <p className="text-red-500">❌ {error}</p>}
+                {loading && (
+                    <p className="text-muted-foreground">Loading Libraries...</p>
+                )}
+                {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && filteredLibraries?.length === 0 && (
-                    <p className="text-muted-foreground">😕 No libraries found.</p>
+                    <p className="text-muted-foreground">No libraries found.</p>
                 )}
 
                 {!loading && filteredLibraries?.length > 0 && (
@@ -64,7 +73,14 @@ const Library = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.4 }}
                                 onClick={() => handleSelect(lib)}
-                                className="w-full h-full p-6 rounded-2xl bg-card text-card-foreground border border-border shadow-md hover:shadow-xl hover:border-primary transition duration-300 group cursor-pointer">
+                                className="w-full h-full p-6 rounded-2xl
+                                           bg-card/50 backdrop-blur-md
+                                           text-card-foreground
+                                           border border-border shadow-md
+                                           hover:shadow-xl hover:border-primary
+                                           transition duration-300
+                                           group cursor-pointer"
+                            >
                                 <p className="text-lg font-bold mb-3">{lib.name}</p>
                                 <p className="text-sm text-muted-foreground mb-1">
                                     {lib.city}

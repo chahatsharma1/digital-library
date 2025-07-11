@@ -46,7 +46,7 @@ export const login = (userData, navigate) => async (dispatch) => {
         dispatch({ type: LOGIN_FAILURE, payload: error.message });
         return {
             error: true,
-            message: error.response?.data?.message || "User login failed",
+            message: error.response?.data?.message || "AdminStudent login failed",
         };
     }
 };

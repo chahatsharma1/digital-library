@@ -1,15 +1,17 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const Layout = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const isHome = location.pathname === "/";
     const isLogin = location.pathname === "/login";
     const isRegister = location.pathname === "/register";
 
     const [isDark, setIsDark] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         const saved = localStorage.getItem("theme");
@@ -17,13 +19,22 @@ const Layout = () => {
         const enableDark = saved === "dark" || (!saved && prefersDark);
         document.documentElement.classList.toggle("dark", enableDark);
         setIsDark(enableDark);
-    }, []);
+
+        const jwt = localStorage.getItem("jwt");
+        setIsLoggedIn(!!jwt);
+    }, [location]);
 
     const toggleTheme = () => {
         const newTheme = !isDark;
         setIsDark(newTheme);
         document.documentElement.classList.toggle("dark", newTheme);
         localStorage.setItem("theme", newTheme ? "dark" : "light");
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("jwt");
+        setIsLoggedIn(false);
+        navigate("/login");
     };
 
     return (
@@ -34,49 +45,63 @@ const Layout = () => {
                     LibraryVerse
                 </Link>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 ml-auto">
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={toggleTheme}
                         className="text-muted-foreground hover:text-foreground"
-                        aria-label="Toggle dark mode">
+                        aria-label="Toggle dark mode"
+                    >
                         {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                     </Button>
 
-                    {isHome && (
-                        <nav className="space-x-4">
-                            <Link to="/login">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
-                                    Login
-                                </Button>
-                            </Link>
-                            <Link to="/register">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
-                                    Signup
-                                </Button>
-                            </Link>
-                        </nav>
+                    {!isHome && isLoggedIn && (
+                        <Button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2">
+                            <LogOut className="w-4 h-4" />
+                            Logout
+                        </Button>
                     )}
 
-                    {isRegister && (
-                        <nav>
-                            <Link to="/login">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
-                                    Login
-                                </Button>
-                            </Link>
-                        </nav>
-                    )}
+                    {!isLoggedIn && (
+                        <>
+                            {isHome && (
+                                <nav className="space-x-4">
+                                    <Link to="/login">
+                                        <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
+                                            Login
+                                        </Button>
+                                    </Link>
+                                    <Link to="/register">
+                                        <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
+                                            Signup
+                                        </Button>
+                                    </Link>
+                                </nav>
+                            )}
 
-                    {isLogin && (
-                        <nav>
-                            <Link to="/register">
-                                <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
-                                    Signup
-                                </Button>
-                            </Link>
-                        </nav>
+                            {isRegister && (
+                                <nav>
+                                    <Link to="/login">
+                                        <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
+                                            Login
+                                        </Button>
+                                    </Link>
+                                </nav>
+                            )}
+
+                            {isLogin && (
+                                <nav>
+                                    <Link to="/register">
+                                        <Button className="bg-primary text-primary-foreground hover:brightness-110 font-outfit">
+                                            Signup
+                                        </Button>
+                                    </Link>
+                                </nav>
+                            )}
+                        </>
                     )}
                 </div>
             </header>

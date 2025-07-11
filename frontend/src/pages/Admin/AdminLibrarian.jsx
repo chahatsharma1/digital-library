@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLibrarian, addLibrarian, deleteUser } from "@/state/user/Action";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {Link} from "react-router-dom";
+import { Link} from "react-router-dom";
+import { LayoutDashboard} from "lucide-react";
+import { motion } from "framer-motion";
 
 const AdminLibrarian = () => {
     const jwt = localStorage.getItem("jwt");
     const dispatch = useDispatch();
     const { librarian, loading, error } = useSelector((store) => store.user);
     const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-    });
+    const [formData, setFormData] = useState({ name: "", email: "", password: "" });
 
     useEffect(() => {
         dispatch(fetchLibrarian(jwt));
@@ -44,103 +39,106 @@ const AdminLibrarian = () => {
     };
 
     return (
-        <div className="min-h-screen p-6 bg-background text-foreground">
-            <div className="flex justify-end mb-6">
+        <div className="bg-background text-foreground min-h-screen px-4 py-8 font-outfit relative">
+            <div className="absolute top-4 right-4">
                 <Link to="/admin">
-                    <Button size="md" className="bg-primary text-primary-foreground px-6 py-3 rounded-lg shadow-md hover:brightness-110">
+                    <Button className="flex items-center gap-2">
+                        <LayoutDashboard className="w-5 h-5" />
                         Dashboard
                     </Button>
                 </Link>
             </div>
-            <h1 className="text-3xl font-bold mb-6 text-center">Librarian Management</h1>
 
-            {loading ? (
-                <p className="text-center">Loading...</p>
-            ) : error ? (
-                <p className="text-center text-red-500">{error}</p>
-            ) : librarian && librarian?.email ? (
-                <Card className="max-w-md w-full mx-auto">
-                    <CardContent className="p-6 space-y-4">
+            <motion.h1
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-3xl font-bold text-center mb-8"
+            >
+                Librarian Management
+            </motion.h1>
+
+            <div className="flex justify-center">
+                {loading ? (
+                    <p>Loading...</p>
+                ) : error ? (
+                    <p className="text-red-500">{error}</p>
+                ) : librarian?.email ? (
+                    <div className="bg-card/50 backdrop-blur-md p-8 rounded-2xl border border-border shadow-md w-full max-w-md space-y-4">
                         <div>
                             <p className="text-xs uppercase text-muted-foreground">Name</p>
-                            <p className="text-lg font-semibold text-foreground">{librarian.name}</p>
+                            <p className="text-lg font-semibold">{librarian.name}</p>
                         </div>
                         <div>
                             <p className="text-xs uppercase text-muted-foreground">Email</p>
-                            <p className="text-lg font-semibold text-foreground">{librarian.email}</p>
+                            <p className="text-lg font-semibold">{librarian.email}</p>
                         </div>
-                        <div>
-                            <p className="text-xs uppercase text-muted-foreground">Role</p>
-                            <p className="text-sm text-foreground">
-                                {librarian.role
-                                    ?.replace("ROLE_", "")
-                                    .toLowerCase()
-                                    .replace(/^\w/, (c) => c.toUpperCase())}
-                            </p>
+
+                        <div className="flex gap-4 pt-4 bg-sec">
+                            <Button onClick = {handleDeleteLibrarian()} type="submit" className="w-full bg-secondary hover:bg-secondary">
+                                Delete
+                            </Button>
                         </div>
-                        <Button variant="destructive" onClick={handleDeleteLibrarian} className="mt-4 w-full">
-                            Delete Librarian
-                        </Button>
-                    </CardContent>
-                </Card>
-            ) : showForm ? (
-                <div className="max-w-md w-full mx-auto bg-card p-8 rounded-xl shadow space-y-6 border">
-                    <div>
-                        <Label htmlFor="name" className="mb-1 block font-medium">
-                            Name
-                        </Label>
-                        <Input
-                            id="name"
+                    </div>
+                ) : showForm ? (
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleAddLibrarian();
+                        }}
+                        className="w-full max-w-md bg-card/50 backdrop-blur-md p-8 rounded-2xl border border-border shadow-md space-y-6"
+                    >
+                        <input
                             type="text"
+                            name="name"
+                            placeholder="Name"
+                            className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             required
-                            className="w-full"
                         />
-                    </div>
-                    <div>
-                        <Label htmlFor="email" className="mb-1 block font-medium">
-                            Email
-                        </Label>
-                        <Input
-                            id="email"
+
+                        <input
                             type="email"
+                            name="email"
+                            placeholder="Email"
+                            className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             required
-                            className="w-full"
                         />
-                    </div>
-                    <div>
-                        <Label htmlFor="password" className="mb-1 block font-medium">
-                            Password
-                        </Label>
-                        <Input
-                            id="password"
+
+                        <input
                             type="password"
+                            name="password"
+                            placeholder="Password"
+                            className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             required
-                            className="w-full"
                         />
-                    </div>
-                    <div className="flex gap-4 justify-end pt-4 border-t border-muted">
-                        <Button onClick={handleAddLibrarian} className="px-6 py-2">
+
+                        <p className="text-xs text-muted-foreground -mt-4">Minimum 6 characters recommended</p>
+
+                        <div className="flex gap-4 pt-2">
+                            <Button type="submit" className="w-1/2">
+                                Add Librarian
+                            </Button>
+                            <Button type="button" variant="secondary" onClick={() => setShowForm(false)} className="w-1/2">
+                                Cancel
+                            </Button>
+                        </div>
+
+                    </form>
+                ) : (
+                    <div className="text-center max-w-md mx-auto">
+                        <p className="mb-6 text-lg">No librarian exists for this university.</p>
+                        <Button onClick={() => setShowForm(true)} className="px-8 py-3">
                             Add Librarian
                         </Button>
-                        <Button variant="secondary" onClick={() => setShowForm(false)} className="px-6 py-2">
-                            Cancel
-                        </Button>
                     </div>
-                </div>
-            ) : (
-                <div className="text-center max-w-md mx-auto">
-                    <p className="mb-6 text-lg">No librarian exists for this university.</p>
-                    <Button onClick={() => setShowForm(true)} className="px-8 py-3">
-                        Add Librarian
-                    </Button>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

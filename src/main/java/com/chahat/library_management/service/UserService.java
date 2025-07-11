@@ -10,8 +10,7 @@ import java.util.List;
 
 public interface UserService {
     User findUserByJWT(String jwt) throws Exception;
-    List<User> getAllUsers();
-    List<User> getUserByRole(ROLE role);
+    List<User> getUserByRoleAndUniversity(ROLE role, University university);
     User getLibrarianByUniversity(University university);
     User getLibrarianByLibrary(Library library);
     void deleteUser(Long userId);

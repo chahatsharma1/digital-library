@@ -34,13 +34,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public List<User> getUserByRole(ROLE role) {
-        return userRepository.findUserByRole(role);
+    public List<User> getUserByRoleAndUniversity(ROLE role, University university){
+        return userRepository.findUserByRoleAndUniversity(role, university);
     }
 
     @Override

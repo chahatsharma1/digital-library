@@ -1,50 +1,33 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { ShieldCheck, Users, Library, LogOut } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { logout } from "@/state/auth/Action";
-import { Button } from "@/components/ui/button";
+import { ShieldCheck, Users, Library } from "lucide-react";
+
 
 const AdminDashboard = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate("/login");
-    };
-
     const options = [
         {
             title: "Manage Librarian",
-            description: "Assign a librarian to your university",
+            description: "Add and delete librarian",
             icon: <ShieldCheck className="h-8 w-8 text-primary" />,
             link: "/admin/librarians",
         },
         {
-            title: "Manage Users",
-            description: "View and delete students or librarians",
+            title: "Manage Students",
+            description: "View and delete students",
             icon: <Users className="h-8 w-8 text-primary" />,
-            link: "/admin/users",
+            link: "/admin/students",
         },
         {
-            title: "Manage Admin",
-            description: "Check university & librarian info",
+            title: "Manage University",
+            description: "Edit university details",
             icon: <Library className="h-8 w-8 text-primary" />,
             link: "/universities",
         },
     ];
 
     return (
-        <div className="relative min-h-screen bg-background text-foreground px-4 py-8">
-            <div className="absolute top-4 right-4">
-                <Button onClick={handleLogout} className="flex items-center gap-2">
-                    <LogOut className="w-5 h-5" />
-                    Logout
-                </Button>
-            </div>
-
+        <div className="relative min-h-screen bg-background text-foreground px-4 py-8 font-outfit">
             <div className="max-w-5xl mx-auto">
                 <motion.h1
                     initial={{ opacity: 0, y: -10 }}
