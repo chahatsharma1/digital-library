@@ -17,7 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -118,14 +117,16 @@ public class AuthController {
         try {
 
             User user = userRepository.findUserByEmail(request.getEmail());
-            if(user == null){
-                throw new UsernameNotFoundException("User Does Not Exist");
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, "User does not exist"));
             }
 
             if (!user.getRole().equals(request.getRole())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(new AuthResponse(null, "Access denied for this role"));
+                String roleName = request.getRole().toString().replace("ROLE_", "").toLowerCase();
+                roleName = roleName.substring(0, 1).toUpperCase() + roleName.substring(1); // Capitalize first letter
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, roleName + " login only"));
             }
+
 
             Authentication auth = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));

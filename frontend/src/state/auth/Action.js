@@ -43,7 +43,7 @@ export const login = (userData, navigate) => async (dispatch) => {
 
         return { error: false };
     } catch (error) {
-        dispatch({ type: LOGIN_FAILURE, payload: error.message });
+        dispatch({ type: LOGIN_FAILURE, payload: error.response.data.message });
         return {
             error: true,
             message: error.response?.data?.message || "AdminStudent login failed",

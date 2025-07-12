@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "@/state/auth/Action.js";
 import { useNavigate } from "react-router-dom";
+import {toast} from "react-hot-toast";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -19,9 +20,13 @@ const Login = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(login(formData, navigate));
+        const result = await dispatch(login(formData, navigate));
+
+        if (result.error) {
+            toast.error(result.message);
+        }
     };
 
     const handleTabChange = (tab) => {
@@ -49,8 +54,7 @@ const Login = () => {
                             ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
-                    onClick={() => handleTabChange("student")}
-                >
+                    onClick={() => handleTabChange("student")}>
                     Student Login
                 </button>
                 <button
@@ -59,8 +63,7 @@ const Login = () => {
                             ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
-                    onClick={() => handleTabChange("admin")}
-                >
+                    onClick={() => handleTabChange("admin")}>
                     Admin Login
                 </button>
                 <button
@@ -69,17 +72,14 @@ const Login = () => {
                             ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
-                    onClick={() => handleTabChange("librarian")}
-                >
+                    onClick={() => handleTabChange("librarian")}>
                     Librarian Login
                 </button>
             </div>
 
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-md bg-card/50 backdrop-blur-md p-8 rounded-2xl border border-border shadow-md space-y-6"
-            >
-
+                className="w-full max-w-md bg-card/50 backdrop-blur-md p-8 rounded-2xl border border-border shadow-md space-y-6">
             <input
                     type="email"
                     name="email"
@@ -90,7 +90,6 @@ const Login = () => {
                     required
                     autoFocus
                 />
-
                 <input
                     type="password"
                     name="password"

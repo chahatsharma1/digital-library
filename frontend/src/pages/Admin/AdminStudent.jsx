@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, fetchStudents } from "@/state/user/Action";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { LayoutDashboard } from "lucide-react";
 
 const AdminStudent = () => {
     const dispatch = useDispatch();
@@ -23,15 +21,6 @@ const AdminStudent = () => {
 
     return (
         <div className="relative min-h-screen bg-background text-foreground px-4 py-8 font-outfit">
-            <div className="absolute top-4 right-4">
-                <Link to="/admin">
-                    <Button className="flex items-center gap-2">
-                        <LayoutDashboard className="w-5 h-5" />
-                        Dashboard
-                    </Button>
-                </Link>
-            </div>
-
             <div className="max-w-5xl mx-auto">
                 <h1 className="text-3xl font-bold text-center mb-8">
                     User Management

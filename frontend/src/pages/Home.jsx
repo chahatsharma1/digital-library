@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { toast } from "react-hot-toast";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -42,17 +41,11 @@ const Home = () => {
     }, []);
 
     const handleLoginClick = () => {
-        const redirected = redirectBasedOnRole();
-        if (!redirected) navigate("/login");
+        navigate("/login");
     };
 
     const handleSignupClick = () => {
-        const redirected = redirectBasedOnRole();
-        if (redirected) {
-            toast("You're already logged in.");
-        } else {
-            navigate("/register");
-        }
+        navigate("/register");
     };
 
     return (
@@ -84,7 +77,7 @@ const Home = () => {
                         <Button
                             size="lg"
                             onClick={redirectBasedOnRole}
-                            className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:brightness-110">
+                            className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:bg-primary/80">
                             Dashboard
                         </Button>
                     ) : (
@@ -92,14 +85,14 @@ const Home = () => {
                             <Button
                                 size="lg"
                                 onClick={handleSignupClick}
-                                className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:brightness-110">
+                                className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:bg-primary/80">
                                 Signup
                             </Button>
 
                             <Button
                                 size="lg"
                                 onClick={handleLoginClick}
-                                className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:brightness-110">
+                                className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:bg-primary/80">
                                 Login
                             </Button>
                         </>
@@ -108,7 +101,7 @@ const Home = () => {
                     <Button
                         size="lg"
                         onClick={() => navigate("/library")}
-                        className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:brightness-110">
+                        className="bg-primary text-primary-foreground px-8 py-5 text-lg shadow-md hover:bg-primary/80">
                         View Public Library
                     </Button>
                 </motion.div>

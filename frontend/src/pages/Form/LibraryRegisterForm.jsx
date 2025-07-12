@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "@/state/auth/Action.js";
 
-const LibraryRegisterForm = () => {
+const LibraryRegisterForm = ({ onSuccess }) => {
     const dispatch = useDispatch();
     const { error } = useSelector((state) => state.auth);
 
@@ -22,6 +22,7 @@ const LibraryRegisterForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(register(formData));
+        onSuccess();
     };
 
     return (

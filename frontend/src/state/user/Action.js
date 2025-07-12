@@ -13,7 +13,6 @@ export const fetchStudents = (jwt) => async (dispatch) => {
             }
         });
         dispatch({ type: FETCH_USERS_SUCCESS, payload: response.data });
-        console.log(response.data);
     } catch (error) {
         dispatch({
             type: FETCH_USERS_FAILURE,

@@ -22,7 +22,7 @@ const AdminDashboard = () => {
             title: "Manage University",
             description: "Edit university details",
             icon: <Library className="h-8 w-8 text-primary" />,
-            link: "/universities",
+            link: "/admin/university",
         },
     ];
 

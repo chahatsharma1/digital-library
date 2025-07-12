@@ -11,6 +11,7 @@ import LibrarianDashboard from "@/pages/Librarian/LibrarianDashboard.jsx";
 import AddBookPage from "@/pages/Librarian/AddBookPage.jsx";
 import BookList from "@/pages/Librarian/BookList.jsx";
 import LibraryBooks from "@/pages/Library/LibraryBooks.jsx";
+import AdminUniversity from "@/pages/Admin/AdminUniversity.jsx";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/admin" element={<AdminDashboard/>} />
                 <Route path="/admin/students" element={<AdminStudent/>} />
                 <Route path="/admin/librarians" element={<AdminLibrarian/>} />
+                <Route path="/admin/university" element={<AdminUniversity/>} />
                 <Route path="/librarian" element={<LibrarianDashboard/>} />
                 <Route path="/librarian/add-book" element={<AddBookPage/>} />
                 <Route path="/librarian/books" element={<BookList/>} />

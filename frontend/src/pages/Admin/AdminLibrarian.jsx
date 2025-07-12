@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLibrarian, addLibrarian, deleteUser } from "@/state/user/Action";
 import { Button } from "@/components/ui/button";
-import { Link} from "react-router-dom";
-import { LayoutDashboard} from "lucide-react";
 import { motion } from "framer-motion";
 
 const AdminLibrarian = () => {
@@ -40,15 +38,6 @@ const AdminLibrarian = () => {
 
     return (
         <div className="bg-background text-foreground min-h-screen px-4 py-8 font-outfit relative">
-            <div className="absolute top-4 right-4">
-                <Link to="/admin">
-                    <Button className="flex items-center gap-2">
-                        <LayoutDashboard className="w-5 h-5" />
-                        Dashboard
-                    </Button>
-                </Link>
-            </div>
-
             <motion.h1
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -75,7 +64,7 @@ const AdminLibrarian = () => {
                         </div>
 
                         <div className="flex gap-4 pt-4 bg-sec">
-                            <Button onClick = {handleDeleteLibrarian()} type="submit" className="w-full bg-secondary hover:bg-secondary">
+                            <Button onClick = {handleDeleteLibrarian} type="submit" className="w-full bg-secondary hover:bg-secondary/80">
                                 Delete
                             </Button>
                         </div>

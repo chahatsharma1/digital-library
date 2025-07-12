@@ -16,7 +16,7 @@ public class University {
     private String name;
     private String city;
 
-    @OneToMany
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> user;
 
     @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -2,9 +2,19 @@ import { useState } from "react";
 import StudentRegisterForm from "@/pages/Form/StudentRegisterForm";
 import UniversityRegisterForm from "@/pages/Form/UniversityRegisterForm";
 import PublicLibraryRegisterForm from "@/pages/Form/LibraryRegisterForm";
+import {toast} from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 
 const Signup = () => {
     const [activeTab, setActiveTab] = useState("student");
+    const navigate = useNavigate();
+
+    const handleSuccess = () => {
+        toast.success("🎉 Registration successful!");
+        setTimeout(() => {
+            navigate("/login");
+        }, 2000);
+    };
 
     return (
         <div className="bg-background text-foreground px-4 py-10 flex flex-col items-center font-outfit">
@@ -46,9 +56,10 @@ const Signup = () => {
             </div>
 
             <div className="w-full max-w-xl bg-card/50 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-border">
-                {activeTab === "student" && <StudentRegisterForm />}
-                {activeTab === "university" && <UniversityRegisterForm />}
-                {activeTab === "library" && <PublicLibraryRegisterForm />}
+                {activeTab === "student" && <StudentRegisterForm onSuccess={() => handleSuccess()} />}
+                {activeTab === "university" && <UniversityRegisterForm onSuccess={() => handleSuccess()} />}
+                {activeTab === "library" && <PublicLibraryRegisterForm onSuccess={() => handleSuccess()} />}
+
             </div>
 
         </div>

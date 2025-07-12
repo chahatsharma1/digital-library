@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "@/state/auth/Action.js";
 import {fetchUniversities} from "@/state/university/Action.js";
 
-const StudentRegisterForm = () => {
+const StudentRegisterForm = ({ onSuccess }) => {
     const dispatch = useDispatch();
     const { error } = useSelector((store) => store.auth);
     const { universities } = useSelector((store) => store.university);
@@ -26,6 +26,7 @@ const StudentRegisterForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(register(formData));
+        onSuccess();
     };
 
     return (
