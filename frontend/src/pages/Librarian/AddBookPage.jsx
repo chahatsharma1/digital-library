@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {BookOpen, Save, AlertCircle, User, Tag, FileText,} from 'lucide-react';
 import { addBook } from '@/state/book/Action.js';
+import { toast } from "react-hot-toast";
 
 const AddBookPage = () => {
     const dispatch = useDispatch();
-    const { loading, error } = useSelector(state => state.book || {});
+    const { loading } = useSelector(state => state.book || {});
 
     const [formData, setFormData] = useState({
         title: '',
@@ -59,7 +60,7 @@ const AddBookPage = () => {
                 genre: '',
             });
 
-            alert('Book added successfully!');
+            toast.success('Book added successfully!');
         } catch (error) {
             console.error('Error adding book:', error);
             alert('Error adding book. Please try again.');
@@ -157,7 +158,7 @@ const AddBookPage = () => {
                                     <button
                                         type="button"
                                         onClick={handleSubmit}
-                                        disabled={isSubmitting || loading}
+                                        disabled={loading || isSubmitting}
                                         className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                                         <Save className="h-4 w-4" />
                                         {isSubmitting || loading ? 'Adding Book...' : 'Add Book'}

@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { login } from "@/state/auth/Action.js";
 import { useNavigate } from "react-router-dom";
-import {toast} from "react-hot-toast";
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { error } = useSelector((state) => state.auth);
 
     const [activeTab, setActiveTab] = useState("student");
     const [formData, setFormData] = useState({
@@ -15,6 +13,14 @@ const Login = () => {
         password: "",
         role: "ROLE_STUDENT",
     });
+    const [error, setError] = useState(null);
+    const errorTimerRef = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            clearTimeout(errorTimerRef.current);
+        };
+    }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,10 +28,17 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        clearTimeout(errorTimerRef.current);
+        setError(null);
+
         const result = await dispatch(login(formData, navigate));
 
-        if (result.error) {
-            toast.error(result.message);
+        if (result && result.error) {
+            setError(result.message || "Invalid credentials. Please try again.");
+            errorTimerRef.current = setTimeout(() => {
+                setError(null);
+            }, 3000);
         }
     };
 
@@ -41,12 +54,13 @@ const Login = () => {
                         ? "ROLE_ADMIN"
                         : "ROLE_LIBRARIAN",
         });
+        clearTimeout(errorTimerRef.current);
+        setError(null);
     };
 
     return (
         <div className="bg-background text-foreground flex flex-col items-center justify-center px-4 py-10 font-outfit">
             <h2 className="text-4xl font-bold mb-6">Login</h2>
-
             <div className="flex space-x-6 mb-8 border-b border-border">
                 <button
                     className={`pb-2 text-lg font-semibold ${
@@ -80,7 +94,7 @@ const Login = () => {
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-md bg-card/50 backdrop-blur-md p-8 rounded-2xl border border-border shadow-md space-y-6">
-            <input
+                <input
                     type="email"
                     name="email"
                     placeholder="Email"
@@ -104,8 +118,7 @@ const Login = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground py-3 rounded font-semibold"
-                >
+                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground py-3 rounded font-semibold">
                     Login as {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
                 </button>
             </form>
