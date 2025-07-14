@@ -44,13 +44,12 @@ const LibrarianDashboard = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-background text-foreground px-4 py-8">
+        <div className="min-h-screen bg-background text-foreground px-4 py-8 font-outfit">
             <motion.h1
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-3xl font-bold text-center mb-10"
-            >
+                className="text-3xl font-bold text-center mb-10 font-outfit">
                 Librarian Dashboard
             </motion.h1>
 
