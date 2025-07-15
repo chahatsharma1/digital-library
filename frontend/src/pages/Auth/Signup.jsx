@@ -27,30 +27,23 @@ const Signup = () => {
                             ? "text-secondary border-b-2 border-secondary"
                             : "text-muted-foreground"
                     }`}
-                    onClick={() => setActiveTab("student")}
-                >
+                    onClick={() => setActiveTab("student")}>
                     Student
                 </button>
 
                 <button
-                    className={`pb-2 text-lg font-semibold ${
-                        activeTab === "university"
-                            ? "text-secondary border-b-2 border-secondary"
-                            : "text-muted-foreground"
-                    }`}
-                    onClick={() => setActiveTab("university")}
-                >
+                    className={`pb-2 text-lg font-semibold ${activeTab === "university"
+                        ? "text-secondary border-b-2 border-secondary"
+                        : "text-muted-foreground"}`}
+                    onClick={() => setActiveTab("university")}>
                     University
                 </button>
 
                 <button
-                    className={`pb-2 text-lg font-semibold ${
-                        activeTab === "library"
+                    className={`pb-2 text-lg font-semibold ${activeTab === "library"
                             ? "text-secondary border-b-2 border-secondary"
-                            : "text-muted-foreground"
-                    }`}
-                    onClick={() => setActiveTab("library")}
-                >
+                            : "text-muted-foreground"}`}
+                    onClick={() => setActiveTab("library")}>
                     Public Library
                 </button>
             </div>
@@ -59,9 +52,7 @@ const Signup = () => {
                 {activeTab === "student" && <StudentRegisterForm onSuccess={() => handleSuccess()} />}
                 {activeTab === "university" && <UniversityRegisterForm onSuccess={() => handleSuccess()} />}
                 {activeTab === "library" && <PublicLibraryRegisterForm onSuccess={() => handleSuccess()} />}
-
             </div>
-
         </div>
     );
 };

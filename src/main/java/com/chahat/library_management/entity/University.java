@@ -1,5 +1,6 @@
 package com.chahat.library_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class University {
     private String city;
 
     @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<User> user;
 
     @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)

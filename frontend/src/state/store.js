@@ -4,6 +4,7 @@ import universityReducer from "@/state/university/Reducer.js";
 import userReducer from "@/state/user/Reducer.js";
 import bookReducer from "@/state/book/Reducer.js";
 import libraryReducer from "@/state/library/Reducer.js";
+import studentReducer from "@/state/student/Reducer.js";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         user: userReducer,
         book: bookReducer,
         library: libraryReducer,
+        student: studentReducer,
     },
 });
 export default store;
