@@ -1,6 +1,9 @@
 package com.chahat.library_management.controller;
 
+import com.chahat.library_management.domain.ROLE;
+import com.chahat.library_management.dto.IssueResponseDTO;
 import com.chahat.library_management.entity.*;
+import com.chahat.library_management.mapper.IssueMapper;
 import com.chahat.library_management.service.LibrarianService;
 import com.chahat.library_management.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/librarian")
@@ -18,6 +22,13 @@ public class LibrarianController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/students")
+    public List<User> getStudents(@RequestHeader("Authorization") String jwt) throws Exception {
+        User adminUser = userService.findUserByJWT(jwt);
+        University university = adminUser.getUniversity();
+        return userService.getUserByRoleAndUniversity(ROLE.ROLE_STUDENT, university);
+    }
 
     @PostMapping("/book")
     public ResponseEntity<Book> addBook(@RequestBody Book book, @RequestHeader("Authorization") String jwt) throws Exception {
@@ -58,12 +69,13 @@ public class LibrarianController {
     }
 
     @GetMapping("/issues")
-    public ResponseEntity<List<Issue>> getAllIssuedBooks(@RequestHeader("Authorization") String jwt) throws Exception {
-        User librarian = userService.findUserByJWT(jwt);
-        University university = librarian.getUniversity();
+    public List<IssueResponseDTO> getAllIssues(@RequestHeader("Authorization") String jwt) throws Exception {
+        User user = userService.findUserByJWT(jwt);
+        University university = user.getUniversity();
         List<Issue> issues = librarianService.getAllIssuedBooks(university);
-        return ResponseEntity.ok(issues);
+        return issues.stream().map(IssueMapper::toDTO).collect(Collectors.toList());
     }
+
 
     @GetMapping("/issues/student/{studentId}")
     public ResponseEntity<List<Issue>> getIssuedBooksByStudent(@PathVariable Long studentId, @RequestHeader("Authorization") String jwt) throws Exception {

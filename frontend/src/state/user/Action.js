@@ -21,6 +21,24 @@ export const fetchStudents = (jwt) => async (dispatch) => {
     }
 };
 
+export const fetchStudentsByLibrarian = (jwt) => async (dispatch) => {
+    dispatch({ type: FETCH_USERS_REQUEST });
+
+    try {
+        const response = await axios.get(`${API_BASE_URL}/librarian/students`, {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        });
+        dispatch({ type: FETCH_USERS_SUCCESS, payload: response.data });
+    } catch (error) {
+        dispatch({
+            type: FETCH_USERS_FAILURE,
+            payload: error.message || "Failed to fetch users",
+        });
+    }
+};
+
 export const fetchLibrarian = (jwt) => async (dispatch) => {
     dispatch({ type: FETCH_LIBRARIAN_REQUEST });
     try {

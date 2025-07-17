@@ -14,6 +14,9 @@ import LibraryBooks from "@/pages/Library/LibraryBooks.jsx";
 import AdminUniversity from "@/pages/Admin/AdminUniversity.jsx";
 import StudentDashboard from "@/pages/Student/StudentDashboard.jsx";
 import StudentBookList from "@/pages/Student/StudentBookList.jsx";
+import IssueBookPage from "@/pages/Librarian/IssueBookPage.jsx";
+import IssuedBookPage from "@/pages/Librarian/IssuedBookPage.jsx";
+import ReturnBookPage from "@/pages/Librarian/ReturnBookPage.jsx";
 
 function App() {
     return (
@@ -28,8 +31,11 @@ function App() {
                 <Route path="/admin/librarians" element={<AdminLibrarian/>} />
                 <Route path="/admin/university" element={<AdminUniversity/>} />
                 <Route path="/librarian" element={<LibrarianDashboard/>} />
-                <Route path="/librarian/add-book" element={<AddBookPage/>} />
                 <Route path="/librarian/books" element={<BookList/>} />
+                <Route path="/librarian/add-book" element={<AddBookPage/>} />
+                <Route path="/librarian/issue-book" element={<IssueBookPage/>} />
+                <Route path="/librarian/issued-books" element={<IssuedBookPage/>} />
+                <Route path="/librarian/return-book" element={<ReturnBookPage/>} />
                 <Route path="/library/:libraryId/books" element={<LibraryBooks />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/library" element={<Library />} />

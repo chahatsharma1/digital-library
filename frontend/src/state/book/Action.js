@@ -1,5 +1,20 @@
 import axios from "axios";
-import {ADD_BOOK_REQUEST, ADD_BOOK_SUCCESS, ADD_BOOK_FAILURE, FETCH_BOOKS_REQUEST, FETCH_BOOKS_SUCCESS, FETCH_BOOKS_FAILURE, FETCH_ISSUES_SUCCESS, FETCH_ISSUES_BY_STUDENT_SUCCESS, ISSUE_BOOK_SUCCESS, RETURN_BOOK_SUCCESS, FETCH_BOOKS_BY_LIBRARY_REQUEST, FETCH_BOOKS_BY_LIBRARY_SUCCESS, FETCH_BOOKS_BY_LIBRARY_FAILURE} from "./ActionType";
+import {
+    ADD_BOOK_REQUEST,
+    ADD_BOOK_SUCCESS,
+    ADD_BOOK_FAILURE,
+    FETCH_BOOKS_REQUEST,
+    FETCH_BOOKS_SUCCESS,
+    FETCH_BOOKS_FAILURE,
+    FETCH_ISSUES_SUCCESS,
+    FETCH_ISSUES_BY_STUDENT_SUCCESS,
+    ISSUE_BOOK_SUCCESS,
+    RETURN_BOOK_SUCCESS,
+    FETCH_BOOKS_BY_LIBRARY_REQUEST,
+    FETCH_BOOKS_BY_LIBRARY_SUCCESS,
+    FETCH_BOOKS_BY_LIBRARY_FAILURE,
+    ISSUE_BOOK_REQUEST, ISSUE_BOOK_FAILURE
+} from "./ActionType";
 import {API_BASE_URL} from "@/config/api.js";
 
 export const addBook = (bookData, jwt ) => async (dispatch) => {
@@ -54,7 +69,7 @@ export const fetchBooksByLibrary = (libraryId) => async (dispatch) => {
 export const fetchAllIssues = (jwt) => async (dispatch) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/librarian/issues`, {
-            headers: { Authorization: jwt },
+            headers: { Authorization: `Bearer ${jwt}` },
         });
         dispatch({ type: FETCH_ISSUES_SUCCESS, payload: response.data });
     } catch (error) {
@@ -73,16 +88,25 @@ export const fetchIssuesByStudent = (studentId, jwt) => async (dispatch) => {
     }
 };
 
-export const issueBook = (bookId, studentId, jwt) => async (dispatch) => {
+export const issueBookToStudent = (bookId, studentId, token) => async (dispatch) => {
+    dispatch({ type: ISSUE_BOOK_REQUEST });
+
     try {
-        const response = await axios.post(
-            `${API_BASE_URL}/librarian/issue?bookId=${bookId}&studentId=${studentId}`,
-            {},
-            { headers: { Authorization: jwt } }
+        const response = await axios.post(`${API_BASE_URL}/librarian/issue`, null, {
+                params: { bookId, studentId },
+                headers: { Authorization: `Bearer ${token},` }
+            }
         );
-        dispatch({ type: ISSUE_BOOK_SUCCESS, payload: response.data });
+
+        dispatch({
+            type: ISSUE_BOOK_SUCCESS,
+            payload: response.data,
+        });
     } catch (error) {
-        console.error("Failed to issue book", error);
+        dispatch({
+            type: ISSUE_BOOK_FAILURE,
+            payload: error.response?.data?.message || error.message,
+        });
     }
 };
 
@@ -91,7 +115,7 @@ export const returnBook = (issueId, jwt) => async (dispatch) => {
         const response = await axios.post(
             `${API_BASE_URL}/librarian/return?issueId=${issueId}`,
             {},
-            { headers: { Authorization: jwt } }
+            { headers: { Authorization: `Bearer ${jwt}`, } }
         );
         dispatch({ type: RETURN_BOOK_SUCCESS, payload: response.data });
     } catch (error) {

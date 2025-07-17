@@ -59,8 +59,7 @@ const LibrarianDashboard = () => {
                         key={idx}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="cursor-pointer"
-                    >
+                        className="cursor-pointer">
                         <Link to={item.link}>
                             <Card className="rounded-2xl shadow-lg transition duration-300">
                                 <CardContent className="p-6 flex flex-col items-start gap-3">
