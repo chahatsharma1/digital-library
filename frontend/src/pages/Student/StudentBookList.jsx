@@ -11,7 +11,6 @@ const StudentBookList = () => {
 
     useEffect(() => {
         dispatch(fetchStudentBooks(localStorage.getItem("jwt")));
-        console.log(studentBooks);
     }, [dispatch]);
 
     const handleSearchChange = (e) => setSearchQuery(e.target.value.toLowerCase());

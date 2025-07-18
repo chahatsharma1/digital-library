@@ -4,6 +4,7 @@ import com.chahat.library_management.domain.ROLE;
 import com.chahat.library_management.dto.IssueResponseDTO;
 import com.chahat.library_management.entity.*;
 import com.chahat.library_management.mapper.IssueMapper;
+import com.chahat.library_management.response.ApiResponse;
 import com.chahat.library_management.service.LibrarianService;
 import com.chahat.library_management.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +62,11 @@ public class LibrarianController {
     }
 
     @PostMapping("/return")
-    public ResponseEntity<Issue> returnBook(@RequestParam Long issueId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<ApiResponse> returnBook(@RequestParam Long issueId, @RequestHeader("Authorization") String jwt) throws Exception {
         User librarian = userService.findUserByJWT(jwt);
         University university = librarian.getUniversity();
         Issue returned = librarianService.returnBook(issueId, university);
-        return ResponseEntity.ok(returned);
+        return ResponseEntity.ok(new ApiResponse(true, "Book Returned"));
     }
 
     @GetMapping("/issues")

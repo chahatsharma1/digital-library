@@ -9,13 +9,13 @@ import {
     FETCH_ISSUES_SUCCESS,
     FETCH_ISSUES_BY_STUDENT_SUCCESS,
     ISSUE_BOOK_SUCCESS,
-    RETURN_BOOK_SUCCESS,
     FETCH_BOOKS_BY_LIBRARY_REQUEST,
     FETCH_BOOKS_BY_LIBRARY_SUCCESS,
     FETCH_BOOKS_BY_LIBRARY_FAILURE,
     ISSUE_BOOK_REQUEST, ISSUE_BOOK_FAILURE
 } from "./ActionType";
 import {API_BASE_URL} from "@/config/api.js";
+import {toast} from "react-hot-toast";
 
 export const addBook = (bookData, jwt ) => async (dispatch) => {
     dispatch({ type: ADD_BOOK_REQUEST });
@@ -112,13 +112,15 @@ export const issueBookToStudent = (bookId, studentId, token) => async (dispatch)
 
 export const returnBook = (issueId, jwt) => async (dispatch) => {
     try {
-        const response = await axios.post(
-            `${API_BASE_URL}/librarian/return?issueId=${issueId}`,
-            {},
-            { headers: { Authorization: `Bearer ${jwt}`, } }
+        await axios.post(`${API_BASE_URL}/librarian/return?issueId=${issueId}`, {},
+            { headers: { Authorization: `Bearer ${jwt}` } }
         );
-        dispatch({ type: RETURN_BOOK_SUCCESS, payload: response.data });
+
+        toast.success("Book returned successfully!");
+        dispatch(fetchAllIssues(jwt));
     } catch (error) {
         console.error("Failed to return book", error);
+        toast.error("Failed to return the book.");
     }
 };
+

@@ -15,7 +15,7 @@ import AdminUniversity from "@/pages/Admin/AdminUniversity.jsx";
 import StudentDashboard from "@/pages/Student/StudentDashboard.jsx";
 import StudentBookList from "@/pages/Student/StudentBookList.jsx";
 import IssueBookPage from "@/pages/Librarian/IssueBookPage.jsx";
-import IssuedBookPage from "@/pages/Librarian/IssuedBookPage.jsx";
+import IssuedBookPage from "@/pages/Librarian/AllIssuedBookPage.jsx";
 import ReturnBookPage from "@/pages/Librarian/ReturnBookPage.jsx";
 
 function App() {

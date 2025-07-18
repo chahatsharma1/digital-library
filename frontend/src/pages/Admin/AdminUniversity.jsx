@@ -34,8 +34,8 @@ const AdminUniversity = () => {
     const handleUpdateUniversity = async () => {
         await dispatch(updateUniversity({ name, city }, localStorage.getItem("jwt")));
         toast.success("🎉 University details updated.");
-        setIsDialogOpen(false); // close dialog
-        dispatch(fetchMyUniversity(localStorage.getItem("jwt"))); // refetch updated university
+        setIsDialogOpen(false);
+        dispatch(fetchMyUniversity(localStorage.getItem("jwt")));
     };
 
     const handleDeleteUniversity = async () => {

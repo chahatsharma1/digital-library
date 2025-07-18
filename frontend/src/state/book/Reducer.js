@@ -5,7 +5,6 @@ import {
     FETCH_ISSUES_SUCCESS,
     FETCH_ISSUES_BY_STUDENT_SUCCESS,
     ISSUE_BOOK_SUCCESS,
-    RETURN_BOOK_SUCCESS,
     ADD_BOOK_REQUEST,
     ADD_BOOK_SUCCESS,
     ADD_BOOK_FAILURE,
@@ -20,7 +19,6 @@ const initialState = {
     studentIssues: [],
     addedBook: null,
     issuedBook: null,
-    returnedBook: null,
     loading: false,
     error: null,
 };
@@ -47,15 +45,6 @@ export const bookReducer = (state = initialState, action) => {
 
         case ISSUE_BOOK_SUCCESS:
             return { ...state, issuedBook: action.payload };
-
-        case RETURN_BOOK_SUCCESS:
-            return {
-                ...state,
-                returnedBook: action.payload,
-                issues: state.issues.map((issue) =>
-                    issue.id === action.payload.id ? action.payload : issue
-                ),
-            };
 
         case FETCH_BOOKS_FAILURE:
         case ADD_BOOK_FAILURE:
