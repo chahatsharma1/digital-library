@@ -66,6 +66,17 @@ export const fetchBooksByLibrary = (libraryId) => async (dispatch) => {
     }
 };
 
+export const fetchAllIssuesForStudent = (jwt) => async (dispatch) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/student/issues`, {
+            headers: { Authorization: `Bearer ${jwt}` },
+        });
+        dispatch({ type: FETCH_ISSUES_SUCCESS, payload: response.data });
+    } catch (error) {
+        console.error("Failed to fetch issued books", error);
+    }
+};
+
 export const fetchAllIssues = (jwt) => async (dispatch) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/librarian/issues`, {

@@ -17,6 +17,8 @@ import StudentBookList from "@/pages/Student/StudentBookList.jsx";
 import IssueBookPage from "@/pages/Librarian/IssueBookPage.jsx";
 import IssuedBookPage from "@/pages/Librarian/AllIssuedBookPage.jsx";
 import ReturnBookPage from "@/pages/Librarian/ReturnBookPage.jsx";
+import StudentIssuedBookPage from "@/pages/Student/StudentIssuedBookPage.jsx";
+import UniversityStaffPage from "@/pages/Student/UniversityStaffPage.jsx";
 
 function App() {
     return (
@@ -26,6 +28,8 @@ function App() {
                 <Route path="/register" element={<Signup/>} />
                 <Route path="/student" element={<StudentDashboard/>} />
                 <Route path="/student/books" element={<StudentBookList/>} />
+                <Route path="/student/my-books" element={<StudentIssuedBookPage/>} />
+                <Route path="/student/staff" element={<UniversityStaffPage/>} />
                 <Route path="/admin" element={<AdminDashboard/>} />
                 <Route path="/admin/students" element={<AdminStudent/>} />
                 <Route path="/admin/librarians" element={<AdminLibrarian/>} />

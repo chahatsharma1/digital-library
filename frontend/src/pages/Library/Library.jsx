@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { fetchLibraries } from "@/state/library/Action.js";
 import { useNavigate } from "react-router-dom";
-import {Search, ArrowRight, Loader2, ServerCrash } from "lucide-react";
+import { Search, ArrowRight, Loader2, ServerCrash } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const LibraryPage = () => {
     const dispatch = useDispatch();
@@ -27,12 +28,12 @@ const LibraryPage = () => {
 
     return (
         <motion.div
-            className="min-h-screen bg-background text-foreground px-4 py-8 font-outfit"
+            className="min-h-screen bg-slate-50 dark:bg-background text-foreground px-4 pb-8 font-outfit"
             initial={{ opacity: 0.6 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, ease: "easeInOut" }}>
             <div className="max-w-7xl mx-auto">
-                <header className="text-center mb-10">
+                <header className="text-center mb-5">
                     <h1 className="text-3xl md:text-3xl font-bold tracking-tight">Public Libraries</h1>
                     <p className="text-muted-foreground mt-2">Select a library to explore its collection.</p>
                 </header>
@@ -45,7 +46,7 @@ const LibraryPage = () => {
                             placeholder="Search by library name or city..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 rounded-lg bg-card/60 border border-border focus:ring-2 focus:ring-primary transition-all shadow-sm"
+                            className="w-full pl-12 pr-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-2 focus:ring-primary transition-all shadow-sm"
                         />
                     </div>
                 </div>
@@ -74,15 +75,14 @@ const LibraryPage = () => {
 
                 {!loading && !error && filteredLibraries?.length > 0 && (
                     <div
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                    >
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredLibraries.map((lib) => (
                             <div
                                 key={lib.id}
                                 onClick={() => handleSelect(lib)}
-                                className="w-full h-full p-6 rounded-2xl bg-card/50 text-card-foreground border border-border shadow-md hover:shadow-xl hover:ring-3 hover:ring-primary/50 transition-all group cursor-pointer relative">
-                                <h3 className="text-lg font-bold mb-1">{lib.name}</h3>
-                                <p className="text-sm text-muted-foreground">{lib.city}</p>
+                                className="w-full h-full p-6 rounded-2xl bg-card text-card-foreground border border-border shadow-md hover:bg-muted/40 transition-colors group cursor-pointer relative">
+                                <h3 className="text-lg font-bold mb-2">{lib.name}</h3>
+                                <Badge variant="default">{lib.city}</Badge>
                                 <ArrowRight className="h-5 w-5 text-muted-foreground absolute top-6 right-6 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
                             </div>
                         ))}

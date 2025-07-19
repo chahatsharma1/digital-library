@@ -15,4 +15,5 @@ public interface UserService {
     User getLibrarianByLibrary(Library library);
     void deleteUser(Long userId);
     void addLibrarian(UserRequest librarian, University university, Library library);
+    List<User> findStaffByUniversity(University university);
 }

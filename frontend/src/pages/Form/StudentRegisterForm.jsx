@@ -1,97 +1,146 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "@/state/auth/Action.js";
-import {fetchUniversities} from "@/state/university/Action.js";
+import { fetchUniversities } from "@/state/university/Action.js";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertCircle, Loader2, Eye, EyeOff } from "lucide-react";
 
 const StudentRegisterForm = ({ onSuccess }) => {
     const dispatch = useDispatch();
-    const { error } = useSelector((store) => store.auth);
-    const { universities } = useSelector((store) => store.university);
+    const { error: authError, loading } = useSelector((state) => state.auth);
+    const { universities, loading: universitiesLoading } = useSelector((state) => state.university);
+
     const [formData, setFormData] = useState({
-        name : "",
+        name: "",
         email: "",
         password: "",
         role: "ROLE_STUDENT",
         universityId: "",
     });
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         dispatch(fetchUniversities());
-    }, []);
+    }, [dispatch]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(register(formData));
-        onSuccess();
+    const handleUniversityChange = (value) => {
+        setFormData({ ...formData, universityId: value });
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await dispatch(register(formData));
+            onSuccess();
+        } catch (err) {
+            console.error("Registration failed:", err);
+        }
+    };
+
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-                type="name"
-                name="name"
-                placeholder="Name"
-                className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
-                value={formData.name}
-                onChange={handleChange}
-                required
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                        id="name"
+                        name="name"
+                        placeholder="Jane Doe"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="student@example.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+            </div>
 
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
-                value={formData.email}
-                onChange={handleChange}
-                required
-            />
+            <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                    <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="••••••••"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute inset-y-0 right-0 h-full px-3 text-muted-foreground"
+                        onClick={togglePasswordVisibility}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                </div>
+            </div>
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="w-full p-3 rounded bg-background placeholder-muted-foreground border border-border text-foreground"
-                value={formData.password}
-                onChange={handleChange}
-                required
-            />
+            <div className="space-y-2">
+                <Label htmlFor="university">University</Label>
+                <Select
+                    name="universityId"
+                    value={formData.universityId}
+                    onValueChange={handleUniversityChange}
+                    required>
+                    <SelectTrigger id="university" className="w-full">
+                        <SelectValue placeholder={universitiesLoading ? "Loading..." : "Select University"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {Array.isArray(universities) && universities.length > 0 ? (
+                            universities.map((uni) => (
+                                <SelectItem key={uni.id} value={uni.id.toString()} className="font-outfit">
+                                    {uni.name}
+                                </SelectItem>
+                            ))
+                        ) : (
+                            <SelectItem value="none" disabled>
+                                No universities available
+                            </SelectItem>
+                        )}
+                    </SelectContent>
+                </Select>
+            </div>
 
-            <select
-                name="universityId"
-                value={formData.universityId}
-                onChange={handleChange}
-                className="w-full p-3 rounded bg-background text-foreground border border-border"
-                required
-            >
-                <option value="" disabled className="text-muted-foreground">
-                    Select University
-                </option>
+            {authError && (
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-destructive/10 text-destructive text-sm font-medium p-3 rounded-md flex items-center gap-2"
+                >
+                    <AlertCircle className="h-4 w-4" />
+                    {authError}
+                </motion.div>
+            )}
 
-                {Array.isArray(universities) && universities.length > 0 ? (
-                    universities.map((uni) => (
-                        <option key={uni.id} value={uni.id} className="text-foreground">
-                            {uni.name}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>Loading universities...</option>
-                )}
-            </select>
-
-
-            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-            <button
-                type="submit"
-                className="w-full bg-primary hover:bg-primary-dark text-primary-foreground py-3 rounded font-semibold"
-            >
-                Submit
-            </button>
+            <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {loading ? "Registering..." : "Register as Student"}
+            </Button>
         </form>
     );
 };

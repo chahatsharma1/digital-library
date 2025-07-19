@@ -42,13 +42,13 @@ const AdminUniversity = () => {
         await dispatch(deleteUniversity(localStorage.getItem("jwt")));
         localStorage.removeItem("jwt");
 
-        toast.error("❌ University deleted successfully");
+        toast.success("University deleted successfully");
         window.location.href = "/";
     };
 
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-6 font-outfit">
-            <h2 className="text-2xl font-semibold font-outfit text-center">Manage University</h2>
+        <div className="max-w-3xl mx-auto space-y-6 font-outfit">
+            <h2 className="text-3xl font-semibold font-outfit text-center">Manage University</h2>
             {university && (
                 <div className="text-center text-muted-foreground">
                     <p className="text-xl">Current University: <span className="font-medium">{university.name}</span></p>

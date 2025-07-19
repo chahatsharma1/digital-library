@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -63,5 +64,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(librarian.getPassword()));
         user.setRole(ROLE.ROLE_LIBRARIAN);
         userRepository.save(user);
+    }
+    @Override
+    public List<User> findStaffByUniversity(University university) {
+        List<ROLE> roles = Arrays.asList(ROLE.ROLE_ADMIN, ROLE.ROLE_LIBRARIAN);
+        return userRepository.findByUniversityAndRoleIn(university, roles);
     }
 }

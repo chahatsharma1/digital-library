@@ -1,5 +1,17 @@
 import axios from "axios";
-import {FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE, DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_FAILURE, ADD_LIBRARIAN_SUCCESS, FETCH_LIBRARIAN_SUCCESS, FETCH_LIBRARIAN_FAILURE, FETCH_LIBRARIAN_REQUEST,} from "./ActionType";
+import {
+    FETCH_USERS_REQUEST,
+    FETCH_USERS_SUCCESS,
+    FETCH_USERS_FAILURE,
+    DELETE_USER_REQUEST,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAILURE,
+    ADD_LIBRARIAN_SUCCESS,
+    FETCH_LIBRARIAN_SUCCESS,
+    FETCH_LIBRARIAN_FAILURE,
+    FETCH_LIBRARIAN_REQUEST,
+    FETCH_UNIVERSITY_STAFF_REQUEST, FETCH_UNIVERSITY_STAFF_SUCCESS, FETCH_UNIVERSITY_STAFF_FAILURE,
+} from "./ActionType";
 
 import { API_BASE_URL } from "@/config/api.js";
 
@@ -78,5 +90,20 @@ export const deleteUser = (userId, jwt) => async (dispatch) => {
             type: DELETE_USER_FAILURE,
             payload: error.message || "Failed to delete user",
         });
+    }
+};
+
+export const fetchUniversityStaff = (jwt) => async (dispatch) => {
+    dispatch({ type: FETCH_UNIVERSITY_STAFF_REQUEST });
+    try {
+        const { data } = await axios.get(`${API_BASE_URL}/student/university-staff`, {
+            headers: {
+                "Authorization": `Bearer ${jwt}`
+            }
+        });
+        dispatch({ type: FETCH_UNIVERSITY_STAFF_SUCCESS, payload: data });
+    } catch (error) {
+        const errorMessage = error.response?.data?.message || error.message;
+        dispatch({ type: FETCH_UNIVERSITY_STAFF_FAILURE, payload: errorMessage });
     }
 };
