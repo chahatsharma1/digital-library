@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { BookOpen, PlusSquare, Share2, RotateCcw, ClipboardList, GraduationCap, ArrowRight } from "lucide-react";
+import { BookOpen, PlusSquare, Share2, RotateCcw, ClipboardList, ArrowRight } from "lucide-react";
 
 const actions = [
     {
@@ -34,12 +34,6 @@ const actions = [
         icon: <ClipboardList className="h-8 w-8 text-primary" />,
         link: "/librarian/issued-books",
     },
-    {
-        title: "Books by Student",
-        description: "Track books issued to a student.",
-        icon: <GraduationCap className="h-8 w-8 text-primary" />,
-        link: "/librarian/student-books",
-    },
 ];
 
 const containerVariants = {
@@ -67,7 +61,7 @@ const itemVariants = {
 
 const LibrarianDashboard = () => {
     return (
-        <div className="min-h-screen bg-background text-foreground px-4 py-8 font-outfit">
+        <div className="min-h-screen bg-background text-foreground font-outfit">
             <motion.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

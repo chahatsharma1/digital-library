@@ -10,10 +10,10 @@ import { UserCog, UserSquare, Mail, ServerCrash} from "lucide-react";
 
 const StaffSkeletonCard = () => (
     <div className="flex items-center space-x-4 p-4">
-        <Skeleton className="h-12 w-12 rounded-full" />
+        <Skeleton className="h-12 w-12 rounded-full bg-primary" />
         <div className="space-y-2">
-            <Skeleton className="h-4 w-[150px]" />
-            <Skeleton className="h-4 w-[200px]" />
+            <Skeleton className="h-4 w-[150px] bg-primary" />
+            <Skeleton className="h-4 w-[200px] bg-primary" />
         </div>
     </div>
 );
@@ -45,7 +45,7 @@ const UniversityStaffPage = () => {
             <main className="max-w-4xl mx-auto space-y-10">
                 {loading && (
                     <div>
-                        <Skeleton className="h-8 w-1/4 mb-4" />
+                        <Skeleton className="h-8 w-1/4 mb-4 bg-primary" />
                         <Card>
                             <StaffSkeletonCard />
                             <StaffSkeletonCard />
@@ -70,7 +70,7 @@ const UniversityStaffPage = () => {
                         <motion.section variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
                             <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
                                 <UserCog className="h-6 w-6 text-primary" />
-                                Administrators
+                                Administrator
                             </h2>
                             <Card>
                                 <CardContent className="p-0 divide-y divide-border">
@@ -85,7 +85,7 @@ const UniversityStaffPage = () => {
                                             </div>
                                             <Badge variant="destructive">Admin</Badge>
                                         </div>
-                                    )) : <p className="p-4 text-muted-foreground">No administrators found.</p>}
+                                    )) : <p className="p-4 text-muted-foreground">No administrator found.</p>}
                                 </CardContent>
                             </Card>
                         </motion.section>
@@ -93,7 +93,7 @@ const UniversityStaffPage = () => {
                         <motion.section variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
                             <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
                                 <UserSquare className="h-6 w-6 text-primary" />
-                                Librarians
+                                Librarian
                             </h2>
                             <Card>
                                 <CardContent className="p-0 divide-y divide-border">
@@ -108,7 +108,7 @@ const UniversityStaffPage = () => {
                                             </div>
                                             <Badge variant="secondary">Librarian</Badge>
                                         </div>
-                                    )) : <p className="p-4 text-muted-foreground">No librarians found.</p>}
+                                    )) : <p className="p-4 text-muted-foreground">No librarian found.</p>}
                                 </CardContent>
                             </Card>
                         </motion.section>

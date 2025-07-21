@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "@/state/auth/Action.js";
+import { login, clearAuthError } from "@/state/auth/Action.js";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,8 +27,11 @@ const Login = () => {
     const errorTimerRef = useRef(null);
 
     useEffect(() => {
-        return () => clearTimeout(errorTimerRef.current);
-    }, []);
+        return () => {
+            dispatch(clearAuthError());
+            clearTimeout(errorTimerRef.current);
+        };
+    }, [dispatch]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,10 +47,15 @@ const Login = () => {
         clearTimeout(errorTimerRef.current);
 
         try {
-            await dispatch(login(formData, navigate));
+            const result = await dispatch(login(formData, navigate));
+            if (result && result.error) {
+                setError(result.message || "Invalid credentials. Please try again.");
+                errorTimerRef.current = setTimeout(() => {
+                    setError(null);
+                }, 5000);
+            }
         } catch (err) {
-            const errorMessage = err.message || "Invalid credentials. Please try again.";
-            setError(errorMessage);
+            setError("An unexpected error occurred. Please try again.");
             errorTimerRef.current = setTimeout(() => setError(null), 5000);
         } finally {
             setIsLoading(false);
@@ -93,7 +102,8 @@ const Login = () => {
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.3 }}>
+                                    transition={{ duration: 0.3 }}
+                                >
                                     <TabsContent value={activeTab} className="mt-0">
                                         <form onSubmit={handleSubmit} className="space-y-4">
                                             <div className="space-y-2">
@@ -126,7 +136,8 @@ const Login = () => {
                                                         size="icon"
                                                         className="absolute inset-y-0 right-0 h-full px-3 text-muted-foreground"
                                                         onClick={togglePasswordVisibility}
-                                                        aria-label={showPassword ? "Hide password" : "Show password"}>
+                                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                                    >
                                                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                                     </Button>
                                                 </div>
@@ -135,7 +146,8 @@ const Login = () => {
                                                 <motion.div
                                                     initial={{ opacity: 0, y: -10 }}
                                                     animate={{ opacity: 1, y: 0 }}
-                                                    className="bg-destructive/10 text-destructive text-sm font-medium p-3 rounded-md flex items-center gap-2">
+                                                    className="bg-destructive/10 text-destructive text-sm font-medium p-3 rounded-md flex items-center gap-2"
+                                                >
                                                     <AlertCircle className="h-4 w-4" />
                                                     {error}
                                                 </motion.div>

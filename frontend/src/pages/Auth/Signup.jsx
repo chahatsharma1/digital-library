@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,10 @@ const Signup = () => {
     const [activeTab, setActiveTab] = useState("student");
     const navigate = useNavigate();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleSuccess = () => {
         toast.success("Registration successful! Redirecting to login...");
         setTimeout(() => {
@@ -20,7 +24,7 @@ const Signup = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-background text-foreground flex justify-center p-4 pt-14 sm:pt-10 font-outfit">
+        <div className="bg-slate-50 dark:bg-background text-foreground flex justify-center p-4 pt-8 sm:pt-8 font-outfit">
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -44,8 +48,7 @@ const Signup = () => {
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.3 }}
-                                >
+                                    transition={{ duration: 0.3 }}>
                                     <TabsContent value="student" className="mt-0">
                                         <StudentRegisterForm onSuccess={handleSuccess} />
                                     </TabsContent>

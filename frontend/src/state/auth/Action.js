@@ -5,7 +5,7 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
-    LOGOUT,
+    LOGOUT, CLEAR_AUTH_ERROR,
 } from "./ActionType";
 import {API_BASE_URL} from "@/config/api.js";
 import axios from "axios";
@@ -43,6 +43,7 @@ export const login = (userData, navigate) => async (dispatch) => {
 
         return { error: false };
     } catch (error) {
+        console.log(error.response.data.message);
         dispatch({ type: LOGIN_FAILURE, payload: error.response.data.message });
         return {
             error: true,
@@ -50,6 +51,11 @@ export const login = (userData, navigate) => async (dispatch) => {
         };
     }
 };
+
+export const clearAuthError = () => (dispatch) => {
+    dispatch({ type: CLEAR_AUTH_ERROR });
+};
+
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem("jwt");

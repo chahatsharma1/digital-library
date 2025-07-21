@@ -36,10 +36,10 @@ const ReturnBookPage = () => {
 
             <div className="max-w-5xl mx-auto">
                 {sortedIssues.length > 0 ? (
-                    <div className="rounded-lg border shadow-md">
+                    <div className="rounded-lg border shadow-md overflow-hidden">
                         <Table>
                             <TableHeader>
-                                <TableRow>
+                                <TableRow className="hover:bg-muted bg-muted">
                                     <TableHead className="font-semibold">Book Title</TableHead>
                                     <TableHead className="font-semibold">Student</TableHead>
                                     <TableHead className="font-semibold">Issued Date</TableHead>

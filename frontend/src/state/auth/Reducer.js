@@ -1,4 +1,11 @@
-import {LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT, REGISTER_SUCCESS, REGISTER_FAILURE,} from "./ActionType";
+import {
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
+    LOGOUT,
+    REGISTER_SUCCESS,
+    REGISTER_FAILURE,
+    CLEAR_AUTH_ERROR,
+} from "./ActionType";
 
 const initialState = {
     user: null,
@@ -24,6 +31,12 @@ const authReducer = (state = initialState, action) => {
             };
         case LOGOUT:
             return initialState;
+
+        case CLEAR_AUTH_ERROR:
+            return {
+                ...state,
+                error: null,
+            };
         default:
             return state;
     }

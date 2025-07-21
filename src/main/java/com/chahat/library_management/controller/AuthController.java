@@ -123,7 +123,7 @@ public class AuthController {
 
             if (!user.getRole().equals(request.getRole())) {
                 String roleName = request.getRole().toString().replace("ROLE_", "").toLowerCase();
-                roleName = roleName.substring(0, 1).toUpperCase() + roleName.substring(1); // Capitalize first letter
+                roleName = roleName.substring(0, 1).toUpperCase() + roleName.substring(1);
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, roleName + " login only"));
             }
 

@@ -12,16 +12,16 @@ const Layout = () => {
     const isLogin = location.pathname === "/login";
     const isRegister = location.pathname === "/register";
 
-    const [isDark, setIsDark] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [role, setRole] = useState("");
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         const enableDark = savedTheme === "dark" || (!savedTheme && prefersDark);
         document.documentElement.classList.toggle("dark", enableDark);
-        setIsDark(enableDark);
 
         const jwt = localStorage.getItem("jwt");
         if (jwt) {
@@ -41,8 +41,8 @@ const Layout = () => {
     }, [location]);
 
     const toggleTheme = () => {
-        const newTheme = !isDark;
-        setIsDark(newTheme);
+        const isCurrentlyDark = document.documentElement.classList.contains("dark");
+        const newTheme = !isCurrentlyDark;
         document.documentElement.classList.toggle("dark", newTheme);
         localStorage.setItem("theme", newTheme ? "dark" : "light");
     };
@@ -68,20 +68,18 @@ const Layout = () => {
 
     return (
         <div className="min-h-screen bg-background text-foreground flex flex-col font-outfit">
-            <div className="sticky top-0 z-50 w-full p-4">
-                <header className="mx-auto flex h-16 w-full max-w-screen-lg items-center justify-between rounded-lg border border-border/40 bg-background/80 px-6 shadow-lg backdrop-blur-lg">
-                    <Link to="/" className="flex items-center gap-2 text-xl font-bold tracking-tight hover:opacity-80 transition-opacity">
-                        <img src="/logo1.png" alt="Library Logo" className="h-8 w-8" />
+            <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-8 sm:px-8 lg:px-8">
+                    <Link to="/" className="flex items-center text-xl gap-2 font-bold tracking-tight transition-opacity">
+                        <img src="/logo1.png" alt="Library Logo" className="h-6 w-5 pb-1" />
                         <span className="hidden sm:inline-block">LibraryVerse</span>
                     </Link>
-
                     <div className="flex items-center gap-2 md:gap-4">
                         <Button
                             variant="ghost"
                             size="icon"
                             onClick={toggleTheme}
-                            aria-label="Toggle theme"
-                        >
+                            aria-label="Toggle theme">
                             <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                             <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                         </Button>
@@ -93,8 +91,7 @@ const Layout = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 10 }}
                                 transition={{ duration: 0.3 }}
-                                className="flex items-center gap-2 md:gap-4"
-                            >
+                                className="flex items-center gap-2 md:gap-4">
                                 {isLoggedIn ? (
                                     <>
                                         {!isDashboardPage && (
@@ -137,22 +134,22 @@ const Layout = () => {
                             </motion.div>
                         </AnimatePresence>
                     </div>
-                </header>
-            </div>
+                </div>
+            </header>
 
-            <main className="flex-1 w-full -mt-24 pt-24">
+            <main className="flex-1 w-full">
                 {isHome ? (
                     <Outlet />
                 ) : (
-                    <div className="container mx-auto max-w-7xl py-8 px-4 sm:px-6 lg:px-8">
+                    <div className="container mx-auto max-w-7xl py-8 px-4 sm:px-6 lg:px-6">
                         <Outlet />
                     </div>
                 )}
             </main>
 
-            <footer className="py-6 md:px-8 md:py-0 border-t border-border/40">
-                <div className="container flex flex-col items-center justify-center gap-4 md:h-10 md:flex-row">
-                    <p className="text-center text-sm leading-loose text-muted-foreground">
+            <footer className="py-2 border-t border-border/40">
+                <div className="container flex items-center justify-center">
+                    <p className="text-center text-sm text-muted-foreground">
                         &copy; {new Date().getFullYear()} LibraryVerse. Built for the future of academic access.
                     </p>
                 </div>
