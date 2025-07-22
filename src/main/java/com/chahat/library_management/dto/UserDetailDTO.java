@@ -1,5 +1,6 @@
 package com.chahat.library_management.dto;
 
+import com.chahat.library_management.domain.ROLE;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UniversityDTO {
+public class UserDetailDTO {
+    private Long id;
     private String name;
+    private String email;
+    private ROLE role;
+    private String universityName;
     private String city;
+    private String libraryName;
 }

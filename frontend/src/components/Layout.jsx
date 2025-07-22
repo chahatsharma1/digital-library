@@ -1,8 +1,10 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, LogOut, LayoutDashboard } from "lucide-react";
+import { Moon, Sun, LogOut, LayoutDashboard, User, Edit } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Layout = () => {
     const location = useLocation();
@@ -14,6 +16,7 @@ const Layout = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [role, setRole] = useState("");
+    const [userName, setUserName] = useState("");
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -30,13 +33,16 @@ const Layout = () => {
                 const base64Payload = jwt.split('.')[1];
                 const decodedPayload = JSON.parse(atob(base64Payload));
                 setRole(decodedPayload.role);
+                setUserName(decodedPayload.name || "");
             } catch (error) {
                 console.error("Failed to decode JWT", error);
                 setRole("");
+                setUserName("");
             }
         } else {
             setIsLoggedIn(false);
             setRole("");
+            setUserName("");
         }
     }, [location]);
 
@@ -102,10 +108,30 @@ const Layout = () => {
                                                 </Link>
                                             </Button>
                                         )}
-                                        <Button onClick={handleLogout} size="sm">
-                                            <LogOut className="mr-2 h-4 w-4" />
-                                            Logout
-                                        </Button>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                                    <Avatar className="h-8 w-8">
+                                                        <AvatarImage src="/user.png" alt={userName} />
+                                                        <AvatarFallback>
+                                                            {userName ? userName.charAt(0).toUpperCase() : <User />}
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className="w-25" align="end" forceMount>
+                                                <DropdownMenuItem asChild>
+                                                    <Link to="/profile">
+                                                        <Edit className="h-4 w-4" />
+                                                        <span>Edit Profile</span>
+                                                    </Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={handleLogout}>
+                                                    <LogOut className="h-4 w-4" />
+                                                    <span>Log out</span>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </>
                                 ) : (
                                     <>

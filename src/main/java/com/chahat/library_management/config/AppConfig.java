@@ -36,6 +36,7 @@ public class AppConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**", "/libraries/**", "/actuator/health").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "LIBRARY_ADMIN")
+                        .requestMatchers("/user/**").hasAnyRole("ADMIN", "LIBRARY_ADMIN", "STUDENT", "LIBRARIAN")
                         .requestMatchers("/university/**").hasRole("ADMIN")
                         .requestMatchers("/student/**").hasRole("STUDENT")
                         .requestMatchers("/librarian/**").hasRole("LIBRARIAN")

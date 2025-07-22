@@ -19,6 +19,7 @@ import IssuedBookPage from "@/pages/Librarian/AllIssuedBookPage.jsx";
 import ReturnBookPage from "@/pages/Librarian/ReturnBookPage.jsx";
 import StudentIssuedBookPage from "@/pages/Student/StudentIssuedBookPage.jsx";
 import UniversityStaffPage from "@/pages/Student/UniversityStaffPage.jsx";
+import EditProfilePage from "@/pages/Auth/EditProfilePage.jsx";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="/register" element={<Signup/>} />
+                <Route path="/profile" element={<EditProfilePage/>} />
                 <Route path="/student" element={<StudentDashboard/>} />
                 <Route path="/student/books" element={<StudentBookList/>} />
                 <Route path="/student/my-books" element={<StudentIssuedBookPage/>} />

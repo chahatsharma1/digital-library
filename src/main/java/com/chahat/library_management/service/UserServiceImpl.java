@@ -2,10 +2,12 @@ package com.chahat.library_management.service;
 
 import com.chahat.library_management.config.JWTProvider;
 import com.chahat.library_management.domain.ROLE;
+import com.chahat.library_management.dto.ChangePasswordRequestDTO;
 import com.chahat.library_management.entity.Library;
 import com.chahat.library_management.entity.University;
 import com.chahat.library_management.entity.User;
 import com.chahat.library_management.repository.UserRepository;
+import com.chahat.library_management.request.EditUserRequest;
 import com.chahat.library_management.request.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,6 +49,37 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getLibrarianByLibrary(Library library) {
         return userRepository.findByRoleAndLibrary(ROLE.ROLE_LIBRARIAN, library);
+    }
+
+    @Override
+    public User updateUser(Long userId, EditUserRequest request) {
+        User updated = userRepository.findUserById(userId);
+
+        if (request.getName() != null && !request.getName().isEmpty()) {
+            updated.setName(request.getName());
+        }
+
+        if (request.getEmail() != null && !request.getEmail().isEmpty()){
+            if (userRepository.findUserByEmail(request.getEmail()) == null){
+                updated.setEmail(request.getEmail());
+            }
+        }
+        return userRepository.save(updated);
+    }
+
+    @Override
+    public void changeUserPassword(User user, ChangePasswordRequestDTO req) throws Exception {
+        if (!passwordEncoder.matches(req.getCurrentPassword(), user.getPassword())) {
+            throw new Exception("Incorrect current password.");
+        }
+
+        if (!req.getNewPassword().equals(req.getConfirmPassword())) {
+            throw new Exception("New password and confirm password do not match.");
+        }
+
+        user.setPassword(passwordEncoder.encode(req.getNewPassword()));
+
+        userRepository.save(user);
     }
 
     @Override
