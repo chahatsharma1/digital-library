@@ -76,6 +76,10 @@ const Home = () => {
     useEffect(() => {
         const token = localStorage.getItem("jwt");
         setIsAuthenticated(!!token);
+
+        fetch('https://library-99462680398.asia-south1.run.app/actuator/health', { mode: 'no-cors' })
+            .catch(error => console.warn("Backend warm-up ping failed:", error));
+
     }, []);
 
     const redirectBasedOnRole = () => {
